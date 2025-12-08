@@ -147,7 +147,31 @@ const AIMealPlan: React.FC = () => {
       };
 
       const plan = await generateMealPlanWithAI(patientForGeneration);
+      
       if (plan) {
+        // Pós-processamento: Garantir substituições mesmo se a IA falhar
+        plan.meals.forEach(meal => {
+            meal.items.forEach(item => {
+                // Tenta corrigir calorias se vier zerado (comum em IAs que não sabem calcular exato)
+                if (!item.calories || item.calories === 0) {
+                    const dbItem = findFoodByName(item.name);
+                    if (dbItem) {
+                        // Tenta extrair numero da quantidade string. Ex: "100g" -> 100
+                        const qtyNum = parseInt(item.quantity.replace(/\D/g, '')) || dbItem.baseQty;
+                        item.calories = Math.round((qtyNum / dbItem.baseQty) * dbItem.kcal);
+                    }
+                }
+
+                // Se a IA não mandou substituições, gera localmente
+                if (!item.substitutions || item.substitutions.length === 0) {
+                    const localSubs = calculateSmartSubstitutions(item.name, item.calories || 0);
+                    if (localSubs.length > 0) {
+                        item.substitutions = localSubs;
+                    }
+                }
+            });
+        });
+
         setGeneratedPlan(plan);
         StorageService.saveMealPlan(plan);
         if (plan.meals.length > 0) setExpandedMeal(plan.meals[0].id);
@@ -174,6 +198,18 @@ const AIMealPlan: React.FC = () => {
           shoppingList: [], // Pode ser gerado depois ou deixado vazio
           generalAdvice: template.generalAdvice
       };
+
+      // Garantir substituições nos templates também
+      newPlan.meals.forEach(meal => {
+        meal.items.forEach(item => {
+            if (!item.substitutions || item.substitutions.length === 0) {
+                const localSubs = calculateSmartSubstitutions(item.name, item.calories || 0);
+                if (localSubs.length > 0) {
+                    item.substitutions = localSubs;
+                }
+            }
+        });
+      });
 
       setGeneratedPlan(newPlan);
       StorageService.saveMealPlan(newPlan);

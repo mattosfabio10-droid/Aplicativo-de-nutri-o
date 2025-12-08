@@ -118,6 +118,7 @@ export const generateMealPlanWithAI = async (patient: PatientWithCustomCalories)
     - Defina horários sugeridos (HH:MM) lógicos para cada refeição.
     - Inclua o campo "calories" em cada item individualmente (estimado).
     - Quantidades em GRAMAS (peso cozido para carboidratos) e MEDIDAS CASEIRAS.
+    - IMPORTANTE: O campo "substitutions" é OBRIGATÓRIO. Forneça 2 a 3 opções de troca calórica equivalente para CADA alimento (ex: Frango -> Peixe ou Ovos).
   `;
 
   try {
@@ -158,7 +159,11 @@ export const generateMealPlanWithAI = async (patient: PatientWithCustomCalories)
                         name: { type: Type.STRING },
                         quantity: { type: Type.STRING, description: "Ex: 100g (4 colheres de sopa)" },
                         calories: { type: Type.NUMBER, description: "Calorias estimadas deste item" },
-                        substitutions: { type: Type.ARRAY, items: { type: Type.STRING } }
+                        substitutions: { 
+                            type: Type.ARRAY, 
+                            items: { type: Type.STRING },
+                            description: "Lista obrigatória de 2-3 alimentos equivalentes para substituição." 
+                        }
                       }
                     }
                   }

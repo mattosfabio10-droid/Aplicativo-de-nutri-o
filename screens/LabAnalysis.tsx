@@ -54,7 +54,7 @@ const examCategories = [
 ];
 
 const LabAnalysis: React.FC = () => {
-  const { currentPatient } = useApp();
+  const { currentPatient, currentUser } = useApp();
   const [activeTab, setActiveTab] = useState<'request' | 'analysis'>('request');
 
   // --- States for Request ---
@@ -102,7 +102,8 @@ const LabAnalysis: React.FC = () => {
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100, 100, 100);
     doc.text("NUTRICIONISTA ORTOMOLECULAR", 105, 30, { align: "center" });
-    doc.text("CRN: 33174", 105, 35, { align: "center" });
+    // Dynamic CRN
+    doc.text(`CRN: ${currentUser?.crn || '33174'}`, 105, 35, { align: "center" });
 
     // Título
     doc.setFontSize(24);
@@ -146,16 +147,16 @@ const LabAnalysis: React.FC = () => {
         y += 7;
     });
 
-    // Assinatura
+    // Assinatura Dinâmica
     const pageHeight = doc.internal.pageSize.height;
     doc.setLineWidth(0.5);
     doc.line(60, pageHeight - 60, 150, pageHeight - 60);
     doc.setFontSize(11);
     doc.setFont("helvetica", "bold");
-    doc.text("Dr. Fábio Mattos", 105, pageHeight - 54, { align: "center" });
+    doc.text(currentUser?.name || "Dr. Fábio Mattos", 105, pageHeight - 54, { align: "center" });
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
-    doc.text("Nutricionista - CRN: 33174", 105, pageHeight - 49, { align: "center" });
+    doc.text(`Nutricionista - CRN: ${currentUser?.crn || '33174'}`, 105, pageHeight - 49, { align: "center" });
 
     doc.save(`Pedido_Exames_${currentPatient.name.replace(/\s+/g, '_')}.pdf`);
   };

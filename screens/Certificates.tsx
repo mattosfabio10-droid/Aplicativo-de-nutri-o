@@ -29,7 +29,7 @@ const getBase64ImageFromURL = (url: string): Promise<string> => {
 };
 
 const Certificates: React.FC = () => {
-  const { patients, currentPatient } = useApp();
+  const { patients, currentPatient, currentUser } = useApp();
   
   // Form States
   const [selectedPatientId, setSelectedPatientId] = useState(currentPatient?.id || '');
@@ -83,7 +83,8 @@ const Certificates: React.FC = () => {
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100, 100, 100);
     doc.text("NUTRICIONISTA ORTOMOLECULAR", 105, 30, { align: "center" });
-    doc.text("CRN: 33174", 105, 35, { align: "center" });
+    // Dynamic CRN based on login
+    doc.text(`CRN: ${currentUser?.crn || '33174'}`, 105, 35, { align: "center" });
 
     // Título Principal
     doc.setFontSize(24);
@@ -122,15 +123,15 @@ const Certificates: React.FC = () => {
         yPos += 20;
     }
 
-    // Assinatura
+    // Assinatura Dinâmica
     doc.setLineWidth(0.5);
     doc.line(60, 220, 150, 220); // Linha
     doc.setFontSize(11);
     doc.setFont("helvetica", "bold");
-    doc.text("Dr. Fábio Mattos", 105, 226, { align: "center" });
+    doc.text(currentUser?.name || "Dr. Fábio Mattos", 105, 226, { align: "center" });
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
-    doc.text("Nutricionista - CRN: 33174", 105, 231, { align: "center" });
+    doc.text(`Nutricionista - CRN: ${currentUser?.crn || '33174'}`, 105, 231, { align: "center" });
 
     // Rodapé removido conforme solicitado (Endereço e Data)
 

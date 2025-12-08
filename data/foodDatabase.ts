@@ -851,10 +851,28 @@ export const FoodDatabase: FoodCategory[] = [
   }
 ];
 
-// Funções Auxiliares de Cálculo Inteligente
+// --- Funções Auxiliares de Cálculo Inteligente ---
 
 export const findFoodByName = (name: string): FoodDbItem | undefined => {
-    return FoodDatabase.flatMap(c => c.items).find(i => i.name === name);
+    if (!name) return undefined;
+    const normalizedSearch = name.toLowerCase().trim();
+    
+    // 1. Exact Match
+    let found = FoodDatabase.flatMap(c => c.items).find(i => i.name.toLowerCase() === normalizedSearch);
+    if (found) return found;
+
+    // 2. Starts With
+    found = FoodDatabase.flatMap(c => c.items).find(i => i.name.toLowerCase().startsWith(normalizedSearch));
+    if (found) return found;
+
+    // 3. Contains (Search term inside DB Name) e.g. Search "Frango" -> Found "Peito de Frango"
+    found = FoodDatabase.flatMap(c => c.items).find(i => i.name.toLowerCase().includes(normalizedSearch));
+    if (found) return found;
+
+    // 4. Reverse Contains (DB Name inside Search term) e.g. Search "Arroz Branco Cozido 100g" -> Found "Arroz Branco"
+    found = FoodDatabase.flatMap(c => c.items).find(i => normalizedSearch.includes(i.name.toLowerCase()));
+    
+    return found;
 };
 
 export const getSmartMeasures = (food: FoodDbItem): Measure[] => {
@@ -881,34 +899,45 @@ export const calculateMacrosForMeasure = (food: FoodDbItem, amount: number): Mac
  * @param targetCalories Calorias alvo
  */
 export const calculateSmartSubstitutions = (foodName: string, targetCalories: number): string[] => {
-    // 1. Encontrar categoria do alimento
-    const category = FoodDatabase.find(cat => cat.items.some(i => i.name === foodName));
+    // 1. Identify the food item in the database
+    const dbItem = findFoodByName(foodName);
+    if (!dbItem) return [];
+
+    // 2. Find its category
+    const category = FoodDatabase.find(cat => cat.items.includes(dbItem));
     if (!category) return [];
 
-    // 2. Filtrar outros alimentos e calcular a quantidade necessária para atingir targetCalories
+    // 3. Filter other items in the same category
+    // If targetCalories is 0 or very low, assume standard serving size calories of the dbItem
+    const refCalories = targetCalories > 10 ? targetCalories : dbItem.kcal;
+
     return category.items
-        .filter(item => item.name !== foodName)
-        .slice(0, 4) // Pegar top 4
+        .filter(item => item.name !== dbItem.name) // Exclude self
+        .slice(0, 3) // Limit to 3 suggestions
         .map(item => {
-            // Regra de três: Se item.kcal está para item.baseQty, então targetCalories está para X
-            // X = (targetCalories * item.baseQty) / item.kcal
-            const amountNeeded = (targetCalories * item.baseQty) / item.kcal;
-            const roundedAmount = Math.round(amountNeeded);
+            // Rule of three: (RefCalories * BaseQty) / ItemKcal = AmountNeeded
+            const amountNeeded = (refCalories * item.baseQty) / item.kcal;
             
-            // Tenta achar uma medida caseira próxima
+            // Rounding logic for cleaner numbers
+            let roundedAmount = Math.round(amountNeeded);
+            
+            // Generate a friendly measure string
             let measureText = `${roundedAmount}${item.baseUnit}`;
+            
             if (item.measures) {
-                // Encontra a medida mais próxima
+                // Find closer household measure
                 const closestMeasure = item.measures.reduce((prev, curr) => {
                     return (Math.abs(curr.amount - roundedAmount) < Math.abs(prev.amount - roundedAmount) ? curr : prev);
                 });
                 
-                // Se a diferença for pequena (<20%), usa o nome da medida
-                if (Math.abs(closestMeasure.amount - roundedAmount) < (roundedAmount * 0.2)) {
-                     measureText = closestMeasure.label.split('(')[0].trim(); // Pega só o nome "1 col. sopa"
+                // If it's close enough (within 25%), use the label
+                if (Math.abs(closestMeasure.amount - roundedAmount) < (roundedAmount * 0.25)) {
+                     // Extract just the measure name part (e.g. "1 col. sopa")
+                     const labelPart = closestMeasure.label.split('(')[0].trim(); 
+                     measureText = labelPart; 
                 }
             }
             
-            return `${item.name} (${measureText} / ~${roundedAmount}${item.baseUnit})`;
+            return `${item.name} (${measureText})`;
         });
 };

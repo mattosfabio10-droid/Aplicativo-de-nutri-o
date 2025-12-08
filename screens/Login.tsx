@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Leaf } from 'lucide-react';
+import { ArrowRight, Leaf, AlertCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Button, Input } from '../components/UI';
 
@@ -10,15 +10,27 @@ const Login: React.FC = () => {
   const { login } = useApp();
   const [loading, setLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  // Form States
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
+    setErrorMsg('');
+
     setTimeout(() => {
-      login();
-      navigate('/dashboard');
-    }, 1000);
+      const success = login(email, password);
+      
+      if (success) {
+        navigate('/dashboard');
+      } else {
+        setErrorMsg('Credenciais inválidas. Verifique email e senha.');
+        setLoading(false);
+      }
+    }, 800);
   };
 
   return (
@@ -61,13 +73,31 @@ const Login: React.FC = () => {
         </div>
         
         <form onSubmit={handleLogin} className="space-y-5 w-full">
+          {errorMsg && (
+            <div className="bg-red-900/20 border border-red-900/50 text-red-400 p-3 rounded-lg text-xs flex items-center gap-2">
+                <AlertCircle size={14} /> {errorMsg}
+            </div>
+          )}
+
           <div className="space-y-1">
              <label className="text-xs font-bold text-gray-500 uppercase ml-1">Email</label>
-             <Input type="email" placeholder="fabio@nutri.com" defaultValue="fabio@nutri.com" className="!bg-black/50 !border-gray-700 focus:!border-primary" />
+             <Input 
+                type="email" 
+                placeholder="seunome@nutri.com" 
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="!bg-black/50 !border-gray-700 focus:!border-primary" 
+             />
           </div>
           <div className="space-y-1">
              <label className="text-xs font-bold text-gray-500 uppercase ml-1">Senha</label>
-             <Input type="password" placeholder="••••••" defaultValue="123456" className="!bg-black/50 !border-gray-700 focus:!border-primary" />
+             <Input 
+                type="password" 
+                placeholder="••••••" 
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                className="!bg-black/50 !border-gray-700 focus:!border-primary" 
+             />
           </div>
           
           <Button type="submit" disabled={loading} className="!mt-8 shadow-xl uppercase tracking-wider text-sm">
@@ -77,12 +107,15 @@ const Login: React.FC = () => {
         </form>
 
         <div className="mt-8 pt-8 border-t border-gray-800 text-center w-full">
-          <button 
-             onClick={() => navigate('/patient-area')}
-             className="text-gray-500 text-xs hover:text-primary transition-colors uppercase tracking-wider"
-          >
-            Área do Paciente
-          </button>
+          <p className="text-gray-600 text-xs mb-2">Acesso Rápido (Demo)</p>
+          <div className="flex justify-center gap-2">
+             <button 
+                onClick={() => { setEmail('fabio@nutri.com'); setPassword('123456'); }}
+                className="text-primary text-xs hover:underline bg-primary/10 px-2 py-1 rounded"
+             >
+               Dr. Fábio
+             </button>
+          </div>
         </div>
       </div>
       

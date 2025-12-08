@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -21,7 +22,7 @@ import { useApp } from '../context/AppContext';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { currentPatient } = useApp();
+  const { currentPatient, currentUser } = useApp();
 
   const menuItems = [
     { title: 'Pacientes', icon: <Users size={24} />, path: '/patients', color: '#60A5FA' },
@@ -47,7 +48,7 @@ const Dashboard: React.FC = () => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/10 transition-colors"></div>
           
           <div className="relative z-10">
-             <h2 className="text-2xl font-bold text-white mb-2">Bem-vindo, Dr. Fábio</h2>
+             <h2 className="text-2xl font-bold text-white mb-2">Bem-vindo(a), {currentUser?.name || 'Doutor(a)'}</h2>
              <p className="text-gray-400 mb-6 max-w-md">
                {currentPatient 
                  ? `Você está editando o planejamento de ${currentPatient.name}.` 
