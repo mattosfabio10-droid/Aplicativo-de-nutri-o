@@ -19,13 +19,13 @@ import LabAnalysis from './screens/LabAnalysis';
 import Agenda from './screens/Agenda';
 import FormManager from './screens/FormManager';
 import Calculators from './screens/Calculators';
+import Login from './screens/Login';
 
-// Force refresh logic
 const AppRoutesComponent = () => {
   return (
     <Routes>
-      {/* Redireciona a raiz direto para o Dashboard */}
       <Route path="/" element={<Navigate to={AppRoutes.DASHBOARD} replace />} />
+      <Route path="/login" element={<Login />} />
       
       <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
       <Route path={AppRoutes.AGENDA} element={<Agenda />} />
@@ -42,7 +42,6 @@ const AppRoutesComponent = () => {
       <Route path={AppRoutes.FORM_MANAGER} element={<FormManager />} />
       <Route path={AppRoutes.CALCULATORS} element={<Calculators />} />
       
-      {/* Fallback para qualquer rota desconhecida ir para o dashboard */}
       <Route path="*" element={<Navigate to={AppRoutes.DASHBOARD} />} />
     </Routes>
   );
