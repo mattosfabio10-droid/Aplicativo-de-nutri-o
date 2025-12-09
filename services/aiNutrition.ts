@@ -1,7 +1,24 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { Patient, MealPlan } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Correção para o erro de Build do Netlify (Exit Code 2):
+// O TypeScript pode não reconhecer 'import.meta.env' ou 'process.env' dependendo da config.
+// O uso de 'as any' evita o bloqueio da compilação.
+const getApiKey = (): string => {
+  try {
+    // Tenta pegar do Vite (Padrão Netlify)
+    const viteKey = (import.meta as any).env?.VITE_API_KEY;
+    if (viteKey) return viteKey;
+  } catch (e) {
+    // Ignora erro se import.meta não existir
+  }
+  
+  // Fallback para Node/Sistema (Padrão local ou container)
+  return process.env.API_KEY || '';
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 // Extendendo o tipo Patient apenas localmente para aceitar o campo opcional de calorias manuais
 interface PatientWithCustomCalories extends Patient {
