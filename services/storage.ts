@@ -26,6 +26,12 @@ export const StorageService = {
     localStorage.setItem(KEYS.PATIENTS, JSON.stringify(patients));
   },
 
+  deletePatient: (id: string) => {
+    const patients = StorageService.getPatients();
+    const filtered = patients.filter(p => p.id !== id);
+    localStorage.setItem(KEYS.PATIENTS, JSON.stringify(filtered));
+  },
+
   getMealPlans: (patientId: string): MealPlan[] => {
     const allPlans: MealPlan[] = JSON.parse(localStorage.getItem(KEYS.MEAL_PLANS) || '[]');
     return allPlans.filter(p => p.patientId === patientId);
@@ -42,12 +48,10 @@ export const StorageService = {
      return all[patientId] || [];
   },
 
-  // Atualizado para suportar Edição
   saveAnthropometry: (patientId: string, record: AnthropometryRecord) => {
     const all: Record<string, AnthropometryRecord[]> = JSON.parse(localStorage.getItem(KEYS.ANTHRO) || '{}');
     if (!all[patientId]) all[patientId] = [];
     
-    // Se tiver ID, tenta achar e atualizar
     if (record.id) {
         const index = all[patientId].findIndex(r => r.id === record.id);
         if (index >= 0) {
@@ -56,7 +60,6 @@ export const StorageService = {
             all[patientId].push(record);
         }
     } else {
-        // Se não tiver ID (legado ou novo sem ID gerado), gera um e adiciona
         record.id = Date.now().toString();
         all[patientId].push(record);
     }
@@ -75,7 +78,6 @@ export const StorageService = {
     localStorage.setItem(KEYS.ANAMNESIS, JSON.stringify(all));
   },
 
-  // --- AGENDA ---
   getAppointments: (): Appointment[] => {
     const data = localStorage.getItem(KEYS.AGENDA);
     return data ? JSON.parse(data) : [];

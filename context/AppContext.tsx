@@ -5,7 +5,7 @@ import { StorageService } from '../services/storage';
 import { AuthorizedUsers } from '../data/authData';
 
 interface AppContextType {
-  currentUser: User | null; // Alterado de isAuthenticated para currentUser
+  currentUser: User | null;
   currentPatient: Patient | null;
   setCurrentPatient: (patient: Patient | null) => void;
   patients: Patient[];
@@ -28,10 +28,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   useEffect(() => {
     refreshPatients();
-    // Tentar recuperar sessão salva (simulação simples)
+    // Recupera sessão salva
     const savedUser = localStorage.getItem('nutri_session');
     if (savedUser) {
-        setCurrentUser(JSON.parse(savedUser));
+        try {
+            setCurrentUser(JSON.parse(savedUser));
+        } catch (e) {
+            console.error("Erro ao restaurar sessão", e);
+            localStorage.removeItem('nutri_session');
+        }
     }
   }, []);
 
@@ -48,6 +53,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const logout = () => {
       setCurrentUser(null);
       localStorage.removeItem('nutri_session');
+      setCurrentPatient(null);
   };
 
   return (

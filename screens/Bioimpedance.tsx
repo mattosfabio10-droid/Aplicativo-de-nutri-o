@@ -1,15 +1,38 @@
 
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line } from 'recharts';
-import { Plus, Save, Scale, AlertCircle, Activity, Zap, Clock, TrendingUp, Info, Edit2 } from 'lucide-react';
+import { Plus, Save, Scale, AlertCircle, Activity, Edit2, Download, FileText, Info } from 'lucide-react';
+import { jsPDF } from "jspdf";
 import Layout from '../components/Layout';
 import { useApp } from '../context/AppContext';
 import { StorageService } from '../services/storage';
 import { AnthropometryRecord, Patient } from '../types';
 import { Button, Input } from '../components/UI';
 
+// Helper de imagem
+const getBase64ImageFromURL = (url: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = url;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(img, 0, 0);
+      const dataURL = canvas.toDataURL("image/png");
+      resolve(dataURL);
+    };
+    img.onerror = (error) => {
+      console.warn("Erro ao carregar imagem para PDF", error);
+      reject(error);
+    };
+  });
+};
+
 const Bioimpedance: React.FC = () => {
-  const { currentPatient, setCurrentPatient, refreshPatients } = useApp();
+  const { currentPatient, setCurrentPatient, refreshPatients, currentUser } = useApp();
   const [data, setData] = useState<AnthropometryRecord[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -165,6 +188,160 @@ const Bioimpedance: React.FC = () => {
       handleCancel();
   };
 
+  const handleExportPDF = async () => {
+    if (!currentPatient || data.length === 0) return;
+
+    const doc = new jsPDF();
+    const primaryColor = [166, 206, 113];
+    const latest = data[data.length - 1];
+
+    // Cabeçalho
+    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.rect(0, 0, 210, 35, 'F');
+    
+    try {
+        const logoUrl = "https://i.imgur.com/JrGn2f5.png"; 
+        const logoData = await getBase64ImageFromURL(logoUrl);
+        doc.addImage(logoData, 'PNG', 10, 2, 30, 30);
+    } catch (e) {}
+
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(22);
+    doc.setFont("helvetica", "bold");
+    doc.text("AVALIAÇÃO DE BIOIMPEDÂNCIA", 105, 18, { align: "center" });
+    
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Paciente: ${currentPatient.name}`, 105, 26, { align: "center" });
+    doc.text(`Data da Avaliação: ${latest.date}`, 105, 31, { align: "center" });
+
+    let y = 50;
+
+    // Seção: Resultados Atuais
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(primaryColor[0] - 50, primaryColor[1] - 50, primaryColor[2] - 50);
+    doc.text("Resultados da Última Avaliação", 15, y);
+    doc.line(15, y + 2, 195, y + 2);
+    y += 15;
+
+    // Grid de Resultados - CENTRALIZADO
+    // Tamanho do card: 40mm de largura
+    // Espaçamento: 5mm
+    // Linha 1 (4 cards): 4*40 + 3*5 = 175mm total. Margem esquerda: (210 - 175) / 2 = 17.5mm
+    const cardWidth = 40;
+    const gap = 5;
+    const startXRow1 = (210 - (4 * cardWidth + 3 * gap)) / 2;
+    
+    // Linha 2 (3 cards): 3*40 + 2*5 = 130mm total. Margem esquerda: (210 - 130) / 2 = 40mm
+    const startXRow2 = (210 - (3 * cardWidth + 2 * gap)) / 2;
+
+    const drawCard = (title: string, value: string, unit: string, x: number, y: number) => {
+        doc.setFillColor(245, 245, 245);
+        doc.roundedRect(x, y, cardWidth, 25, 2, 2, 'F');
+        
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+        doc.setFont("helvetica", "normal");
+        doc.text(title, x + (cardWidth / 2), y + 7, { align: "center" });
+        
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont("helvetica", "bold");
+        doc.text(value, x + (cardWidth / 2), y + 16, { align: "center" });
+        
+        doc.setFontSize(7);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(120, 120, 120);
+        doc.text(unit, x + (cardWidth / 2), y + 22, { align: "center" });
+    };
+
+    let cx = startXRow1;
+    drawCard("PESO", latest.weight.toString(), "kg", cx, y);
+    cx += cardWidth + gap;
+    drawCard("IMC", latest.bmi.toString(), "kg/m²", cx, y);
+    cx += cardWidth + gap;
+    drawCard("GORDURA", latest.bodyFat?.toString() || "-", "%", cx, y);
+    cx += cardWidth + gap;
+    drawCard("MÚSCULO", latest.skeletalMuscle?.toString() || "-", "%", cx, y);
+    
+    y += 32;
+    cx = startXRow2;
+    
+    drawCard("G. VISCERAL", latest.visceralFat?.toString() || "-", "nível", cx, y);
+    cx += cardWidth + gap;
+    drawCard("ID. CORPORAL", latest.bodyAge?.toString() || "-", "anos", cx, y);
+    cx += cardWidth + gap;
+    drawCard("METABOLISMO", latest.restingMetabolism?.toString() || "-", "kcal", cx, y);
+    
+    y += 40;
+
+    // Seção: Histórico
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(primaryColor[0] - 50, primaryColor[1] - 50, primaryColor[2] - 50);
+    doc.text("Histórico de Evolução (Últimas avaliações)", 15, y);
+    doc.line(15, y + 2, 195, y + 2);
+    y += 10;
+
+    // Tabela
+    const headers = ["Data", "Peso (kg)", "IMC", "Gordura (%)", "Músculo (%)", "Visceral"];
+    const colWidths = [35, 30, 30, 30, 30, 30];
+    let startX = 15;
+
+    // Header Row
+    doc.setFillColor(230, 230, 230);
+    doc.rect(startX, y, 185, 8, 'F');
+    doc.setFontSize(9);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont("helvetica", "bold");
+    
+    let currentX = startX;
+    headers.forEach((header, i) => {
+        doc.text(header, currentX + 2, y + 5.5);
+        currentX += colWidths[i];
+    });
+    y += 8;
+
+    // Data Rows
+    doc.setFont("helvetica", "normal");
+    const historyData = data.slice().reverse().slice(0, 10); // Last 10
+
+    historyData.forEach((row, index) => {
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+        
+        if (index % 2 === 0) doc.setFillColor(250, 250, 250);
+        else doc.setFillColor(255, 255, 255);
+        doc.rect(startX, y, 185, 8, 'F');
+
+        currentX = startX;
+        doc.text(row.date, currentX + 2, y + 5.5);
+        currentX += colWidths[0];
+        doc.text(row.weight.toString(), currentX + 2, y + 5.5);
+        currentX += colWidths[1];
+        doc.text(row.bmi.toString(), currentX + 2, y + 5.5);
+        currentX += colWidths[2];
+        doc.text(row.bodyFat?.toString() || "-", currentX + 2, y + 5.5);
+        currentX += colWidths[3];
+        doc.text(row.skeletalMuscle?.toString() || "-", currentX + 2, y + 5.5);
+        currentX += colWidths[4];
+        doc.text(row.visceralFat?.toString() || "-", currentX + 2, y + 5.5);
+        
+        y += 8;
+    });
+
+    // Rodapé
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text(`Nutricionista: ${currentUser?.name || "Dr. Fábio Mattos"} - CRN: ${currentUser?.crn || "33174"}`, 105, pageHeight - 10, { align: "center" });
+
+    doc.save(`Bioimpedancia_${currentPatient.name.replace(/\s+/g, '_')}.pdf`);
+  };
+
   const getVisceralStatus = (level: number) => {
       if (level === 0) return { label: '-', color: 'text-gray-500' };
       if (level <= 9) return { label: 'Normal (0-9)', color: 'text-green-400' };
@@ -182,6 +359,15 @@ const Bioimpedance: React.FC = () => {
   return (
     <Layout title="Bioimpedância Omron" showBack>
       
+      {/* Action Bar */}
+      <div className="flex justify-end mb-6">
+         {latest && (
+             <Button onClick={handleExportPDF} className="!w-auto flex items-center gap-2 bg-gray-800 border border-gray-700 hover:bg-gray-700 text-white shadow-lg">
+                 <FileText size={18} /> Exportar Relatório PDF
+             </Button>
+         )}
+      </div>
+
       {/* Top Banner - Latest Stats */}
       {latest ? (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">

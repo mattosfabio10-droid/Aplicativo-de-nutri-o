@@ -14,7 +14,8 @@ import {
   FileCheck,
   FlaskConical,
   CalendarDays,
-  Scale
+  Scale,
+  Calculator
 } from 'lucide-react';
 import Layout from '../components/Layout';
 import { DashboardCard, Button } from '../components/UI';
@@ -29,8 +30,9 @@ const Dashboard: React.FC = () => {
     { title: 'Agenda', icon: <CalendarDays size={24} />, path: '/agenda', color: '#FFFFFF' },
     { title: 'Anamnese', icon: <ClipboardList size={24} />, path: '/anamnesis', color: '#F472B6' },
     { title: 'Antropometria', icon: <Ruler size={24} />, path: '/anthropometry', color: '#34D399' },
-    { title: 'Bioimpedância', icon: <Scale size={24} />, path: '/bioimpedance', color: '#A6CE71' }, // Novo
-    { title: 'IA Nutricional', icon: <Sparkles size={24} />, path: '/meal-plan-ai', color: '#FBBF24' },
+    { title: 'Calculadoras', icon: <Calculator size={24} />, path: '/calculators', color: '#10B981' }, 
+    { title: 'Bioimpedância', icon: <Scale size={24} />, path: '/bioimpedance', color: '#A6CE71' }, 
+    { title: 'Planej. Alimentar', icon: <Utensils size={24} />, path: '/meal-plan-ai', color: '#FBBF24' },
     { title: 'Exames Lab.', icon: <FlaskConical size={24} />, path: '/lab-analysis', color: '#C084FC' },
     { title: 'Atestados', icon: <FileCheck size={24} />, path: '/certificates', color: '#EAB308' },
     { title: 'Orientações', icon: <FileHeart size={24} />, path: '/guidelines', color: '#F87171' },
@@ -83,17 +85,17 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Quick AI Action */}
+        {/* Quick Diet Action */}
         <div className="bg-primary/10 border border-primary/20 p-6 rounded-2xl flex flex-col justify-between hover:border-primary/50 transition-colors cursor-pointer" onClick={() => currentPatient ? navigate('/meal-plan-ai') : navigate('/patients')}>
           <div>
             <div className="bg-primary text-black w-10 h-10 rounded-lg flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
-              <Sparkles size={20} />
+              <Utensils size={20} />
             </div>
-            <h3 className="font-bold text-white text-lg">Gerador IA</h3>
-            <p className="text-sm text-gray-400 mt-1">Crie planos alimentares completos em segundos.</p>
+            <h3 className="font-bold text-white text-lg">Criar Dieta</h3>
+            <p className="text-sm text-gray-400 mt-1">Use a Inteligência Artificial ou crie um plano do zero manualmente.</p>
           </div>
           <div className="flex items-center gap-2 text-primary font-bold text-sm mt-4">
-            Acessar Ferramenta <ArrowRight size={16} />
+            Acessar Planejamento <ArrowRight size={16} />
           </div>
         </div>
       </div>

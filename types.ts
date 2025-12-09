@@ -160,6 +160,7 @@ export enum AppRoutes {
   GUIDELINES = '/guidelines',
   CERTIFICATES = '/certificates',
   LAB_ANALYSIS = '/lab-analysis',
+  CALCULATORS = '/calculators',
   SETTINGS = '/settings',
   PATIENT_AREA = '/patient-area',
   FORM_MANAGER = '/forms'

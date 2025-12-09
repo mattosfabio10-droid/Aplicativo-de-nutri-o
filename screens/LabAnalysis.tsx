@@ -1,13 +1,13 @@
 
 import React, { useState } from 'react';
-import { FlaskConical, Download, Sparkles, FileText, Check, AlertCircle } from 'lucide-react';
+import { FlaskConical, Download, Sparkles, FileText, Check, AlertCircle, Loader2 } from 'lucide-react';
 import { jsPDF } from "jspdf";
 import Layout from '../components/Layout';
 import { Button, Input } from '../components/UI';
 import { useApp } from '../context/AppContext';
 import { analyzeLabResults } from '../services/aiNutrition';
 
-// Helper de imagem
+// Helper de imagem robusto
 const getBase64ImageFromURL = (url: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -22,7 +22,10 @@ const getBase64ImageFromURL = (url: string): Promise<string> => {
       const dataURL = canvas.toDataURL("image/png");
       resolve(dataURL);
     };
-    img.onerror = () => reject(new Error('Failed to load image'));
+    img.onerror = (error) => {
+      console.warn("Erro ao carregar imagem para PDF", error);
+      reject(error);
+    };
   });
 };
 
@@ -61,6 +64,7 @@ const LabAnalysis: React.FC = () => {
   const [selectedExams, setSelectedExams] = useState<string[]>([]);
   const [customExams, setCustomExams] = useState('');
   const [clinicalIndication, setClinicalIndication] = useState('Avaliação Nutricional de Rotina');
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   // --- States for Analysis ---
   const [analysisInput, setAnalysisInput] = useState('');
@@ -78,87 +82,105 @@ const LabAnalysis: React.FC = () => {
 
   const handleGenerateRequestPDF = async () => {
     if (!currentPatient) return;
-
-    const doc = new jsPDF();
-    const primaryColor = [166, 206, 113];
-
-    // Borda
-    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.setLineWidth(1);
-    doc.rect(10, 10, 190, 277);
-
-    // Cabeçalho
-    try {
-        const logoUrl = "https://i.imgur.com/JrGn2f5.png";
-        const logoData = await getBase64ImageFromURL(logoUrl);
-        doc.addImage(logoData, 'PNG', 20, 15, 30, 30);
-    } catch (e) {}
-
-    doc.setTextColor(0, 0, 0);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.text("MATTOS NUTRICARE", 105, 25, { align: "center" });
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(100, 100, 100);
-    doc.text("NUTRICIONISTA ORTOMOLECULAR", 105, 30, { align: "center" });
-    // Dynamic CRN
-    doc.text(`CRN: ${currentUser?.crn || '33174'}`, 105, 35, { align: "center" });
-
-    // Título
-    doc.setFontSize(24);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont("helvetica", "bold");
-    doc.text("SOLICITAÇÃO DE EXAMES", 105, 60, { align: "center" });
-    doc.setLineWidth(0.5);
-    doc.line(40, 65, 170, 65);
-
-    let y = 80;
-
-    // Dados Paciente
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Paciente: ${currentPatient.name}`, 20, y);
-    doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 150, y);
-    y += 10;
-    doc.text(`Indicação Clínica: ${clinicalIndication}`, 20, y);
-    y += 15;
-
-    // Lista de Exames
-    doc.setFont("helvetica", "bold");
-    doc.text("Solicito a realização dos seguintes exames laboratoriais:", 20, y);
-    y += 10;
-
-    doc.setFont("helvetica", "normal");
     
-    const allExams = [...selectedExams];
-    if (customExams) {
-        const extras = customExams.split(',').map(s => s.trim()).filter(Boolean);
-        allExams.push(...extras);
-    }
+    setIsGeneratingPdf(true);
 
-    allExams.forEach(exam => {
-        if (y > 250) {
-            doc.addPage();
-            doc.rect(10, 10, 190, 277);
-            y = 30;
+    try {
+        const doc = new jsPDF();
+        const primaryColor = [166, 206, 113];
+
+        // Borda
+        doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+        doc.setLineWidth(1);
+        doc.rect(10, 10, 190, 277);
+
+        // Cabeçalho (Tentativa de imagem)
+        try {
+            const logoUrl = "https://i.imgur.com/JrGn2f5.png";
+            const logoData = await getBase64ImageFromURL(logoUrl);
+            doc.addImage(logoData, 'PNG', 20, 15, 30, 30);
+        } catch (e) {
+            console.warn("Falha ao carregar logo, gerando sem imagem.");
         }
-        doc.text(`- ${exam}`, 25, y);
-        y += 7;
-    });
 
-    // Assinatura Dinâmica
-    const pageHeight = doc.internal.pageSize.height;
-    doc.setLineWidth(0.5);
-    doc.line(60, pageHeight - 60, 150, pageHeight - 60);
-    doc.setFontSize(11);
-    doc.setFont("helvetica", "bold");
-    doc.text(currentUser?.name || "Dr. Fábio Mattos", 105, pageHeight - 54, { align: "center" });
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Nutricionista - CRN: ${currentUser?.crn || '33174'}`, 105, pageHeight - 49, { align: "center" });
+        doc.setTextColor(0, 0, 0);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(22);
+        doc.text("MATTOS NUTRICARE", 105, 25, { align: "center" });
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100, 100, 100);
+        doc.text("NUTRICIONISTA ORTOMOLECULAR", 105, 30, { align: "center" });
+        // Dynamic CRN
+        doc.text(`CRN: ${currentUser?.crn || '33174'}`, 105, 35, { align: "center" });
 
-    doc.save(`Pedido_Exames_${currentPatient.name.replace(/\s+/g, '_')}.pdf`);
+        // Título
+        doc.setFontSize(24);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont("helvetica", "bold");
+        doc.text("SOLICITAÇÃO DE EXAMES", 105, 60, { align: "center" });
+        doc.setLineWidth(0.5);
+        doc.line(40, 65, 170, 65);
+
+        let y = 80;
+
+        // Dados Paciente
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text(`Paciente: ${currentPatient.name}`, 20, y);
+        doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 150, y);
+        y += 10;
+        doc.text(`Indicação Clínica: ${clinicalIndication}`, 20, y);
+        y += 15;
+
+        // Lista de Exames
+        doc.setFont("helvetica", "bold");
+        doc.text("Solicito a realização dos seguintes exames laboratoriais:", 20, y);
+        y += 10;
+
+        doc.setFont("helvetica", "normal");
+        
+        const allExams = [...selectedExams];
+        if (customExams) {
+            const extras = customExams.split(',').map(s => s.trim()).filter(Boolean);
+            allExams.push(...extras);
+        }
+
+        if (allExams.length === 0) {
+            doc.text("- Nenhum exame selecionado.", 25, y);
+        }
+
+        allExams.forEach(exam => {
+            if (y > 250) {
+                doc.addPage();
+                // Redraw border on new page
+                doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+                doc.setLineWidth(1);
+                doc.rect(10, 10, 190, 277);
+                y = 30;
+            }
+            doc.text(`- ${exam}`, 25, y);
+            y += 7;
+        });
+
+        // Assinatura Dinâmica
+        const pageHeight = doc.internal.pageSize.height;
+        doc.setLineWidth(0.5);
+        doc.line(60, pageHeight - 60, 150, pageHeight - 60);
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.text(currentUser?.name || "Dr. Fábio Mattos", 105, pageHeight - 54, { align: "center" });
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "normal");
+        doc.text(`Nutricionista - CRN: ${currentUser?.crn || '33174'}`, 105, pageHeight - 49, { align: "center" });
+
+        doc.save(`Pedido_Exames_${currentPatient.name.replace(/\s+/g, '_')}.pdf`);
+    } catch (err) {
+        console.error("Erro ao gerar PDF:", err);
+        alert("Ocorreu um erro ao gerar o PDF. Tente novamente.");
+    } finally {
+        setIsGeneratingPdf(false);
+    }
   };
 
   // --- Handlers for Analysis ---
@@ -246,9 +268,10 @@ const LabAnalysis: React.FC = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end pt-4">
-                <Button onClick={handleGenerateRequestPDF} className="!w-auto flex items-center gap-2 px-8 shadow-xl">
-                    <Download size={20} /> Gerar Pedido PDF
+            <div className="flex justify-end pt-4 pb-12">
+                <Button onClick={handleGenerateRequestPDF} disabled={isGeneratingPdf} className="!w-auto flex items-center gap-2 px-8 shadow-xl">
+                    {isGeneratingPdf ? <Loader2 size={20} className="animate-spin" /> : <Download size={20} />}
+                    {isGeneratingPdf ? 'Gerando PDF...' : 'Gerar Pedido PDF'}
                 </Button>
             </div>
         </div>

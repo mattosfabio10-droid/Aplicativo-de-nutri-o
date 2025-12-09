@@ -13,7 +13,9 @@ export interface MealPlanTemplate {
 }
 
 export const MealPlanTemplates: MealPlanTemplate[] = [
-  // --- TEMPLATES POR CALORIA (MANTIDOS) ---
+  // =================================================================
+  // CATEGORIA: CALORIAS (ESCALA)
+  // =================================================================
   {
     id: 'vlc_1000',
     name: 'VLCD - 1000 Kcal',
@@ -26,72 +28,39 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '08:00',
         items: [
-          { name: 'Ovo Cozido', quantity: '1 unidade', calories: 78 },
-          { name: 'Mamão Papaia', quantity: '1/2 unidade', calories: 60 },
-          { name: 'Café Preto', quantity: '1 xícara', calories: 0 }
+          { name: 'Ovo Cozido', quantity: '1 unidade (50g)', calories: 78, substitutions: ['1 fatia de Queijo Minas', '2 Claras', '1 col. sopa de Patê de Atum'] },
+          { name: 'Mamão Papaia', quantity: '1/2 unidade (140g)', calories: 60, substitutions: ['1 fatia de Melão', '10 Morangos', '1 Kiwi'] },
+          { name: 'Café Preto', quantity: '1 xícara (150ml)', calories: 0, substitutions: ['Chá Verde', 'Chá de Hibisco', 'Água com limão'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:00',
         items: [
-          { name: 'Salada de Folhas', quantity: 'Prato Cheio', calories: 20 },
-          { name: 'Peito de Frango Grelhado', quantity: '100g', calories: 165 },
-          { name: 'Legumes no Vapor (Brócolis)', quantity: '1 xícara', calories: 35 },
-          { name: 'Arroz Integral', quantity: '2 col. sopa', calories: 50 }
+          { name: 'Salada de Folhas', quantity: 'Prato Cheio (50g)', calories: 20, substitutions: ['Rúcula e Agrião', 'Couve crua picada', 'Repolho ralado'] },
+          { name: 'Peito de Frango Grelhado', quantity: '100g (1 filé médio)', calories: 165, substitutions: ['120g de Tilápia', '2 Ovos cozidos', '100g de Patinho moído'] },
+          { name: 'Legumes no Vapor (Brócolis)', quantity: '1 xícara (80g)', calories: 35, substitutions: ['Couve-flor', 'Abobrinha', 'Vagem'] },
+          { name: 'Arroz Integral', quantity: '2 col. sopa (50g)', calories: 50, substitutions: ['50g de Batata Doce', '2 col. sopa de Quinoa', '50g de Mandioca'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Iogurte Natural Desnatado', quantity: '1 pote', calories: 70 },
-          { name: 'Morangos', quantity: '5 unidades', calories: 25 }
+          { name: 'Iogurte Natural Desnatado', quantity: '1 pote (160g)', calories: 70, substitutions: ['1 fatia de Ricota', '200ml Leite Desnatado', '1 Ovo'] },
+          { name: 'Morangos', quantity: '5 unidades (75g)', calories: 25, substitutions: ['1 fatia de Kiwi', '1 fatia fina de Abacaxi', '1 Ameixa'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Sopa de Legumes com Carne Magra', quantity: '1 prato fundo', calories: 200 },
-          { name: 'Fio de Azeite', quantity: '1 col. chá', calories: 45 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'cal_1100',
-    name: '1100 Kcal - Déficit Agressivo',
-    description: 'Leve aumento de proteína em relação à VLCD.',
-    goal: 'Perda de Peso',
-    totalCalories: 1100,
-    macros: { protein: 100, carbs: 90, fats: 38 },
-    generalAdvice: "Mantenha o foco na hidratação.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160 },
-          { name: 'Melão', quantity: '1 fatia média', calories: 60 }
+          { name: 'Sopa de Legumes com Carne Magra', quantity: '1 prato fundo (300ml)', calories: 200, substitutions: ['Omelete de 2 ovos com espinafre', 'Salada com Atum (água)'] },
+          { name: 'Fio de Azeite', quantity: '1 col. chá (5ml)', calories: 45, substitutions: ['6 Amêndoas', '1 noz', '1/4 de abacate'] }
         ]
       },
       {
-        id: '2', name: 'Almoço', time: '12:00',
+        id: '5', name: 'Ceia', time: '22:30',
         items: [
-          { name: 'Salada Verde', quantity: 'À vontade', calories: 20 },
-          { name: 'Filé de Tilápia', quantity: '120g', calories: 140 },
-          { name: 'Batata Doce Cozida', quantity: '100g', calories: 112 },
-          { name: 'Azeite', quantity: '1 col. chá', calories: 45 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Whey Protein (com água)', quantity: '1 dose', calories: 120 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Omelete de Legumes (2 ovos)', quantity: '1 unidade', calories: 180 },
-          { name: 'Salada de Tomate', quantity: '1 pires', calories: 30 }
+          { name: 'Chá de Camomila', quantity: '1 xícara (200ml)', calories: 0, substitutions: ['Chá de Melissa', 'Chá de Mulungu'] },
+          { name: 'Gelatina Zero', quantity: '1 taça (100ml)', calories: 10, substitutions: ['Chá de Erva Doce'] }
         ]
       }
     ]
@@ -108,73 +77,39 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '08:00',
         items: [
-          { name: 'Pão Integral', quantity: '1 fatia', calories: 60 },
-          { name: 'Ovo Mexido', quantity: '1 unidade', calories: 80 },
-          { name: 'Café com Leite Desn.', quantity: '1 xícara', calories: 60 }
+          { name: 'Pão Integral', quantity: '1 fatia (25g)', calories: 60, substitutions: ['2 torradas integrais', '1 Tapioca pequena (20g)', '1/2 Pão Francês sem miolo'] },
+          { name: 'Ovo Mexido', quantity: '1 unidade (50g)', calories: 80, substitutions: ['1 fatia de Queijo Minas', '2 col. sopa de Atum'] },
+          { name: 'Café com Leite Desn.', quantity: '1 xícara (150ml)', calories: 60, substitutions: ['Iogurte Natural (1/2 pote)', 'Leite de Amêndoas'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:00',
         items: [
-          { name: 'Arroz Integral', quantity: '3 col. sopa', calories: 75 },
-          { name: 'Feijão', quantity: '1/2 concha', calories: 45 },
-          { name: 'Frango Grelhado', quantity: '100g', calories: 165 },
-          { name: 'Legumes', quantity: '1 pires', calories: 40 }
+          { name: 'Arroz Integral', quantity: '3 col. sopa (75g)', calories: 75, substitutions: ['1 batata pequena', '3 col. sopa Quinoa', '80g Mandioca'] },
+          { name: 'Feijão', quantity: '1/2 concha (70g)', calories: 45, substitutions: ['Lentilha', 'Grão de Bico'] },
+          { name: 'Frango Grelhado', quantity: '100g (1 filé médio)', calories: 165, substitutions: ['Peixe Assado', 'Carne Moída Magra', 'Omelete (2 ovos)'] },
+          { name: 'Legumes', quantity: '1 pires (100g)', calories: 40, substitutions: ['Salada crua à vontade', 'Legumes assados'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Fruta (Maçã)', quantity: '1 unidade', calories: 70 },
-          { name: 'Iogurte Natural', quantity: '1 pote', calories: 70 }
+          { name: 'Fruta (Maçã)', quantity: '1 unidade média (130g)', calories: 70, substitutions: ['Pera', '1 fatia de Melão', '1 Kiwi'] },
+          { name: 'Iogurte Natural', quantity: '1 pote (160g)', calories: 70, substitutions: ['1 fatia de Queijo Branco', '200ml Água de Coco'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Salada Completa com Atum', quantity: '1 prato', calories: 250 },
-          { name: 'Azeite', quantity: '1 col. sobremesa', calories: 45 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'cal_1300',
-    name: '1300 Kcal - Déficit Moderado',
-    description: 'Equilíbrio e saciedade para perda consistente.',
-    goal: 'Perda de Peso',
-    totalCalories: 1300,
-    macros: { protein: 110, carbs: 120, fats: 45 },
-    generalAdvice: "Inclui lanches estratégicos.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '07:30',
-        items: [
-          { name: 'Tapioca Pequena', quantity: '2 col. sopa goma', calories: 100 },
-          { name: 'Ovo Mexido', quantity: '2 unidades', calories: 160 }
+          { name: 'Salada Completa com Atum', quantity: '1 prato cheio', calories: 250, substitutions: ['Sopa de Legumes com Frango', 'Wrap de Couve com Frango'] },
+          { name: 'Azeite', quantity: '1 col. sobremesa (5ml)', calories: 45, substitutions: ['1/4 de Abacate', '1 col. sobremesa de Sementes'] }
         ]
       },
       {
-        id: '2', name: 'Almoço', time: '12:30',
+        id: '5', name: 'Ceia', time: '22:30',
         items: [
-          { name: 'Arroz', quantity: '3 col. sopa', calories: 75 },
-          { name: 'Feijão', quantity: '1 concha pequena', calories: 70 },
-          { name: 'Carne Magra', quantity: '100g', calories: 180 },
-          { name: 'Vegetais', quantity: 'À vontade', calories: 30 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Banana com Aveia', quantity: '1 un + 1 col. sopa', calories: 100 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Filé de Frango', quantity: '120g', calories: 190 },
-          { name: 'Abóbora Assada', quantity: '100g', calories: 60 },
-          { name: 'Salada', quantity: '1 pires', calories: 20 }
+          { name: 'Chá de Erva Cidreira', quantity: '1 xícara (200ml)', calories: 0, substitutions: ['Chá de Camomila'] },
+          { name: 'Castanha do Pará', quantity: '1 unidade (5g)', calories: 30, substitutions: ['2 Nozes', '3 Amêndoas'] }
         ]
       }
     ]
@@ -191,74 +126,38 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '08:00',
         items: [
-          { name: 'Pão Francês s/ miolo', quantity: '1 un', calories: 100 },
-          { name: 'Queijo Minas', quantity: '2 fatias', calories: 100 },
-          { name: 'Café com Leite', quantity: '1 xícara', calories: 60 }
+          { name: 'Pão Francês s/ miolo', quantity: '1 unidade (50g)', calories: 100, substitutions: ['2 fatias Pão Integral', '3 torradas'] },
+          { name: 'Queijo Minas', quantity: '2 fatias finas (30g)', calories: 100, substitutions: ['Ovo mexido', 'Requeijão Light'] },
+          { name: 'Café com Leite', quantity: '1 xícara (150ml)', calories: 60, substitutions: ['Iogurte', 'Leite com Cacau'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:00',
         items: [
-          { name: 'Arroz', quantity: '4 col. sopa', calories: 100 },
-          { name: 'Feijão', quantity: '1 concha', calories: 90 },
-          { name: 'Frango Grelhado', quantity: '120g', calories: 190 },
-          { name: 'Salada', quantity: '1/2 prato', calories: 30 }
+          { name: 'Arroz', quantity: '4 col. sopa (100g)', calories: 100, substitutions: ['150g Batata', '100g Macarrão'] },
+          { name: 'Feijão', quantity: '1 concha (100g)', calories: 90, substitutions: ['Lentilha', 'Grão de Bico'] },
+          { name: 'Frango Grelhado', quantity: '120g (1 filé grande)', calories: 190, substitutions: ['Carne Bovina Magra', 'Peixe'] },
+          { name: 'Salada', quantity: '1/2 prato (80g)', calories: 30, substitutions: ['Legumes cozidos'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Iogurte com Fruta', quantity: '1 pote + 1/2 fruta', calories: 120 }
+          { name: 'Iogurte com Fruta', quantity: '1 pote + 1/2 fruta', calories: 120, substitutions: ['Vitamina de fruta', 'Mingau de Aveia pequeno'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Omelete (2 ovos)', quantity: '1 unidade', calories: 180 },
-          { name: 'Salada Variada', quantity: '1 prato', calories: 40 },
-          { name: 'Azeite', quantity: '1 col. sobremesa', calories: 45 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'cal_1500',
-    name: '1500 Kcal - Metabolismo Médio',
-    description: 'Ponto de partida para a maioria das mulheres ativas.',
-    goal: 'Manutenção',
-    totalCalories: 1500,
-    macros: { protein: 120, carbs: 150, fats: 50 },
-    generalAdvice: "Bom volume de comida com controle de gorduras.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '07:30',
-        items: [
-          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160 },
-          { name: 'Pão Integral', quantity: '1 fatia', calories: 60 },
-          { name: 'Fruta', quantity: '1 unidade', calories: 70 }
+          { name: 'Omelete (2 ovos)', quantity: '1 unidade', calories: 180, substitutions: ['Frango desfiado', 'Atum (1 lata)'] },
+          { name: 'Salada Variada', quantity: '1 prato cheio', calories: 40, substitutions: ['Sopa de Legumes'] },
+          { name: 'Azeite', quantity: '1 col. sobremesa (5ml)', calories: 45, substitutions: ['Castanhas', 'Abacate'] }
         ]
       },
       {
-        id: '2', name: 'Almoço', time: '12:30',
+        id: '5', name: 'Ceia', time: '22:30',
         items: [
-          { name: 'Arroz', quantity: '4 col. sopa', calories: 100 },
-          { name: 'Feijão', quantity: '1 concha', calories: 90 },
-          { name: 'Carne Magra', quantity: '120g', calories: 200 },
-          { name: 'Legumes', quantity: '1 pires', calories: 50 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Sanduíche Natural', quantity: '1/2 unidade', calories: 150 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Peixe Grelhado', quantity: '150g', calories: 180 },
-          { name: 'Batata Cozida', quantity: '100g', calories: 90 },
-          { name: 'Salada e Azeite', quantity: 'À vontade + 1 col. chá', calories: 60 }
+          { name: 'Fruta Leve (Pera/Maçã)', quantity: '1 unidade pequena', calories: 60, substitutions: ['1 fatia de Melão', '1 Kiwi'] }
         ]
       }
     ]
@@ -275,73 +174,39 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '08:00',
         items: [
-          { name: 'Pão Francês', quantity: '1 unidade', calories: 135 },
-          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160 },
-          { name: 'Queijo', quantity: '1 fatia', calories: 50 }
+          { name: 'Pão Francês', quantity: '1 unidade (50g)', calories: 135, substitutions: ['Tapioca', 'Cuscuz'] },
+          { name: 'Ovos Mexidos', quantity: '2 unidades (100g)', calories: 160, substitutions: ['Frango desfiado', 'Queijo Quente'] },
+          { name: 'Queijo', quantity: '1 fatia (20g)', calories: 50, substitutions: ['Requeijão', 'Manteiga'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:00',
         items: [
-          { name: 'Arroz', quantity: '5 col. sopa', calories: 125 },
-          { name: 'Feijão', quantity: '1 concha', calories: 90 },
-          { name: 'Frango', quantity: '130g', calories: 210 },
-          { name: 'Legumes', quantity: '1 pires', calories: 50 }
+          { name: 'Arroz', quantity: '5 col. sopa (125g)', calories: 125, substitutions: ['200g Batata', '150g Macarrão'] },
+          { name: 'Feijão', quantity: '1 concha (100g)', calories: 90, substitutions: ['Lentilha', 'Grão de Bico'] },
+          { name: 'Frango', quantity: '130g (1 filé grande)', calories: 210, substitutions: ['Carne Bovina', 'Peixe'] },
+          { name: 'Legumes', quantity: '1 pires (100g)', calories: 50, substitutions: ['Salada Variada'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Iogurte + Granola', quantity: '1 pote + 2 col. sopa', calories: 160 }
+          { name: 'Iogurte + Granola', quantity: '1 pote + 2 col. sopa', calories: 160, substitutions: ['Fruta + Aveia', 'Pão de Queijo (2 un)'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Patrolinha/Carne Moída', quantity: '120g', calories: 200 },
-          { name: 'Purê de Batata', quantity: '2 col. servir', calories: 120 },
-          { name: 'Salada', quantity: '1 pires', calories: 20 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'cal_1700',
-    name: '1700 Kcal - Padrão Masculino',
-    description: 'Déficit calórico moderado para homens.',
-    goal: 'Perda de Peso',
-    totalCalories: 1700,
-    macros: { protein: 140, carbs: 170, fats: 60 },
-    generalAdvice: "Aumente a intensidade do treino.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '07:30',
-        items: [
-          { name: 'Tapioca com Queijo e Ovos', quantity: '1 média (2 ovos)', calories: 300 },
-          { name: 'Café', quantity: '1 xícara', calories: 0 }
+          { name: 'Patrolinha/Carne Moída', quantity: '120g (4 col. sopa)', calories: 200, substitutions: ['Frango desfiado', 'Omelete'] },
+          { name: 'Purê de Batata', quantity: '2 col. servir (100g)', calories: 120, substitutions: ['Arroz', 'Aipim'] },
+          { name: 'Salada', quantity: '1 pires', calories: 20, substitutions: ['Legumes cozidos'] }
         ]
       },
       {
-        id: '2', name: 'Almoço', time: '12:30',
+        id: '5', name: 'Ceia', time: '22:30',
         items: [
-          { name: 'Arroz', quantity: '6 col. sopa', calories: 150 },
-          { name: 'Feijão', quantity: '1 concha cheia', calories: 100 },
-          { name: 'Carne Bovina', quantity: '120g', calories: 220 },
-          { name: 'Salada e Azeite', quantity: '1 prato', calories: 60 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Banana + Pasta de Amendoim', quantity: '1 un + 1 col. sopa', calories: 160 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Frango Grelhado', quantity: '150g', calories: 240 },
-          { name: 'Batata Doce', quantity: '150g', calories: 170 },
-          { name: 'Brócolis', quantity: '1 xícara', calories: 35 }
+          { name: 'Iogurte Natural', quantity: '1/2 pote (80g)', calories: 40, substitutions: ['Leite morno (100ml)', '1 fatia de queijo'] },
+          { name: 'Aveia', quantity: '1 col. sopa (15g)', calories: 50, substitutions: ['Chia', 'Linhaça'] }
         ]
       }
     ]
@@ -358,72 +223,37 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '08:00',
         items: [
-          { name: 'Pão com Ovos e Queijo', quantity: '2 fatias + 2 ovos', calories: 350 },
-          { name: 'Fruta', quantity: '1 porção', calories: 70 }
+          { name: 'Pão com Ovos e Queijo', quantity: '2 fatias + 2 ovos', calories: 350, substitutions: ['Tapioca com Frango e Queijo', 'Crepioca (2 ovos + 30g goma)'] },
+          { name: 'Fruta', quantity: '1 porção média', calories: 70, substitutions: ['Suco Verde', '1 Banana'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:00',
         items: [
-          { name: 'Arroz', quantity: '150g', calories: 190 },
-          { name: 'Feijão', quantity: '1 concha', calories: 90 },
-          { name: 'Carne/Frango', quantity: '130g', calories: 220 },
-          { name: 'Salada com Azeite', quantity: '1 prato', calories: 80 }
+          { name: 'Arroz', quantity: '150g (6 col. sopa)', calories: 190, substitutions: ['200g Batata', '150g Macarrão'] },
+          { name: 'Feijão', quantity: '1 concha (100g)', calories: 90, substitutions: ['Grão de Bico', 'Lentilha'] },
+          { name: 'Carne/Frango', quantity: '130g (1 filé grande)', calories: 220, substitutions: ['Peixe Grelhado', 'Lombo Suíno'] },
+          { name: 'Salada com Azeite', quantity: '1 prato', calories: 80, substitutions: ['Legumes na manteiga'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Iogurte Proteico + Aveia', quantity: '1 un + 2 col. sopa', calories: 180 }
+          { name: 'Iogurte Proteico + Aveia', quantity: '1 un + 2 col. sopa', calories: 180, substitutions: ['Whey Protein + Fruta', '2 ovos cozidos'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Peixe ou Frango', quantity: '150g', calories: 240 },
-          { name: 'Purê de Mandioquinha', quantity: '150g', calories: 150 },
-          { name: 'Legumes', quantity: '1 pires', calories: 50 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'cal_1900',
-    name: '1900 Kcal - Performance Leve',
-    description: 'Início de superávit ou manutenção masculina.',
-    goal: 'Performance',
-    totalCalories: 1900,
-    macros: { protein: 155, carbs: 210, fats: 70 },
-    generalAdvice: "Refeições mais volumosas.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '07:00',
-        items: [
-          { name: 'Crepioca (2 ovos + 30g goma)', quantity: '1 grande', calories: 250 },
-          { name: 'Recheio Frango/Queijo', quantity: '2 col. sopa', calories: 100 },
-          { name: 'Suco de Laranja', quantity: '1 copo', calories: 90 }
+          { name: 'Peixe ou Frango', quantity: '150g (1 filé grande)', calories: 240, substitutions: ['Carne Moída', 'Omelete Recheado'] },
+          { name: 'Purê de Mandioquinha', quantity: '150g (3 col. servir)', calories: 150, substitutions: ['Batata Doce Assada', 'Milho Cozido'] },
+          { name: 'Legumes', quantity: '1 pires', calories: 50, substitutions: ['Salada Verde'] }
         ]
       },
       {
-        id: '2', name: 'Almoço', time: '12:30',
+        id: '5', name: 'Ceia', time: '22:30',
         items: [
-          { name: 'Arroz', quantity: '200g', calories: 250 },
-          { name: 'Feijão', quantity: '1 concha', calories: 90 },
-          { name: 'Carne Vermelha', quantity: '130g', calories: 240 },
-          { name: 'Salada', quantity: '1/2 prato', calories: 30 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Sanduíche Natural', quantity: '1 unidade', calories: 250 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Macarrão com Carne Moída', quantity: '1 prato raso', calories: 350 },
-          { name: 'Salada', quantity: '1 pires', calories: 20 }
+          { name: 'Abacate', quantity: '2 col. sopa (40g)', calories: 60, substitutions: ['Coco seco (20g)', 'Castanhas (3 un)'] }
         ]
       }
     ]
@@ -431,47 +261,114 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
   {
     id: 'cal_2000',
     name: '2000 Kcal - Hipertrofia / Atleta',
-    description: 'Dieta normativa para homens ativos ou ganho de massa.',
+    description: 'Dieta normativa para homens ativos ou ganho de massa leve.',
     goal: 'Hipertrofia',
     totalCalories: 2000,
     macros: { protein: 165, carbs: 240, fats: 75 },
-    generalAdvice: "Não pule refeições. Proteína em todas as etapas.",
+    generalAdvice: "Não pule refeições. Tente comer a cada 3-4 horas para manter o balanço nitrogenado positivo.",
     meals: [
       {
         id: '1', name: 'Café da Manhã', time: '07:00',
         items: [
-          { name: 'Pão Francês', quantity: '2 unidades', calories: 270 },
-          { name: 'Ovos Mexidos', quantity: '3 ovos', calories: 240 },
-          { name: 'Fruta', quantity: '1 unidade', calories: 70 }
+          { name: 'Pão Francês', quantity: '2 unidades (100g)', calories: 270, substitutions: ['4 fatias Pão de Forma', 'Tapioca Grande (80g goma)', 'Cuscuz (2 fatias)'] },
+          { name: 'Ovos Mexidos', quantity: '3 ovos', calories: 240, substitutions: ['100g Frango Desfiado + Queijo', '1.5 scoop Whey + Leite', 'Atum (1 lata)'] },
+          { name: 'Fruta', quantity: '1 unidade média', calories: 70, substitutions: ['1 Banana', '1 Maçã', '1 Pera'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:30',
         items: [
-          { name: 'Arroz', quantity: '200g', calories: 250 },
-          { name: 'Feijão', quantity: '1 concha cheia', calories: 120 },
-          { name: 'Carne/Frango', quantity: '150g', calories: 260 },
-          { name: 'Azeite', quantity: '1 col. sobremesa', calories: 45 }
+          { name: 'Arroz', quantity: '200g (escumadeira cheia)', calories: 250, substitutions: ['250g Batata', '200g Macarrão', '200g Mandioca'] },
+          { name: 'Feijão', quantity: '1 concha cheia (140g)', calories: 120, substitutions: ['Lentilha', 'Grão de Bico', 'Feijão Branco'] },
+          { name: 'Carne/Frango', quantity: '150g (1 filé grande)', calories: 260, substitutions: ['Peixe Grelhado', 'Lombo Suíno', 'Carne Seca'] },
+          { name: 'Azeite', quantity: '1 col. sobremesa (5ml)', calories: 45, substitutions: ['Abacate na salada', 'Sementes', '5 azeitonas'] }
         ]
       },
       {
         id: '3', name: 'Pré-Treino', time: '16:00',
         items: [
-          { name: 'Banana + Aveia + Mel', quantity: 'Bowl', calories: 200 }
+          { name: 'Banana + Aveia + Mel', quantity: '1 banana + 2 col. aveia', calories: 200, substitutions: ['2 fatias Pão + Geleia', 'Açaí pequeno', 'Batata Doce + Frango'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Batata Inglesa', quantity: '250g', calories: 220 },
-          { name: 'Carne Magra', quantity: '150g', calories: 250 },
-          { name: 'Legumes', quantity: '1 xícara', calories: 50 }
+          { name: 'Batata Inglesa', quantity: '250g (2 médias)', calories: 220, substitutions: ['Arroz (150g)', 'Macarrão (150g)', 'Aipim (150g)'] },
+          { name: 'Carne Magra', quantity: '150g (1 filé grande)', calories: 250, substitutions: ['Frango Grelhado', '3 Ovos', 'Peixe'] },
+          { name: 'Legumes', quantity: '1 xícara (100g)', calories: 50, substitutions: ['Salada Variada', 'Couve refogada'] }
+        ]
+      },
+      {
+        id: '5', name: 'Ceia', time: '23:00',
+        items: [
+          { name: 'Iogurte ou Leite', quantity: '1 porção (200ml)', calories: 100, substitutions: ['Whey Protein', 'Queijo Cottage', '2 claras de ovo'] }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'hipertrofia_3000',
+    name: 'Bulking Agressivo (3000 kcal)',
+    description: 'Alto volume de carboidratos para ganho de peso em ectomorfos ou atletas.',
+    goal: 'Hipertrofia Máxima',
+    totalCalories: 3000,
+    macros: { protein: 200, carbs: 400, fats: 70 },
+    generalAdvice: "Coma mesmo sem fome. Use refeições líquidas (shakes) para bater as calorias se necessário.",
+    meals: [
+      {
+        id: '1', name: 'Desjejum', time: '07:00',
+        items: [
+          { name: 'Ovos inteiros', quantity: '4 unidades', calories: 310, substitutions: ['150g Frango desfiado', '2 scoops Whey + Leite'] },
+          { name: 'Pão Francês', quantity: '3 unidades (150g)', calories: 400, substitutions: ['6 fatias Pão de Forma', '120g Tapioca', '300g Cuscuz'] },
+          { name: 'Suco de Uva Integral', quantity: '1 copo (300ml)', calories: 180, substitutions: ['Suco de Laranja', '2 Bananas', '400ml Leite Integral'] }
+        ]
+      },
+      {
+        id: '2', name: 'Almoço', time: '12:00',
+        items: [
+          { name: 'Arroz Branco', quantity: '300g (2 escumadeiras)', calories: 380, substitutions: ['400g Batata', '300g Macarrão', '300g Mandioca'] },
+          { name: 'Feijão', quantity: '2 conchas (200g)', calories: 180, substitutions: ['Lentilha', 'Grão de Bico', 'Feijão Tropeiro (cuidado gordura)'] },
+          { name: 'Carne Vermelha Magra', quantity: '150g (1 bife grande)', calories: 280, substitutions: ['Coxa/Sobrecoxa Frango', 'Salmão', 'Bisteca Suína'] },
+          { name: 'Azeite', quantity: '1 col. sopa (13ml)', calories: 90, substitutions: ['Abacate', 'Nozes', 'Manteiga'] },
+          { name: 'Salada', quantity: 'à vontade', calories: 30, substitutions: ['Legumes cozidos', 'Vinagrete'] }
+        ]
+      },
+      {
+        id: '3', name: 'Pré-Treino', time: '16:00',
+        items: [
+          { name: 'Banana Prata', quantity: '3 unidades', calories: 210, substitutions: ['400ml Açaí', '150g Hipercalórico', '300g Batata Doce'] },
+          { name: 'Aveia em Flocos', quantity: '4 col. sopa (60g)', calories: 120, substitutions: ['Granola', 'Farinha de Arroz', 'Pasta de Amendoim'] },
+          { name: 'Mel', quantity: '2 col. sopa', calories: 120, substitutions: ['Doce de Leite', 'Geleia', 'Melaço'] }
+        ]
+      },
+      {
+        id: '4', name: 'Pós-Treino', time: '18:00',
+        items: [
+          { name: 'Whey Protein', quantity: '2 scoops (60g)', calories: 240, substitutions: ['Albumina', '150g Frango', '6 Claras de Ovo'] },
+          { name: 'Maltodextrina/Dextrose', quantity: '40g', calories: 160, substitutions: ['2 Bananas', 'Pão Branco (2 fatias)', 'Suco de Uva'] }
+        ]
+      },
+      {
+        id: '5', name: 'Jantar', time: '21:00',
+        items: [
+          { name: 'Macarrão Cozido', quantity: '250g (Prato fundo)', calories: 350, substitutions: ['300g Batata', '200g Arroz', 'Purê de Batata (300g)'] },
+          { name: 'Frango Grelhado', quantity: '150g', calories: 240, substitutions: ['Carne Moída', 'Peixe', 'Omelete de 3 ovos'] },
+          { name: 'Azeite', quantity: '1 col. sobremesa', calories: 45, substitutions: ['Manteiga', 'Gema de ovo extra', 'Queijo Ralado'] }
+        ]
+      },
+      {
+        id: '6', name: 'Ceia', time: '23:00',
+        items: [
+          { name: 'Pasta de Amendoim', quantity: '2 col. sopa (30g)', calories: 180, substitutions: ['Abacate', 'Mix de Castanhas', 'Coco Seco'] },
+          { name: 'Iogurte Natural', quantity: '1 pote (170g)', calories: 100, substitutions: ['Leite', 'Kefir'] }
         ]
       }
     ]
   },
 
-  // --- NOVAS DOENÇAS ADICIONADAS ---
+  // =================================================================
+  // CATEGORIA: CLÍNICA E DOENÇAS CRÔNICAS
+  // =================================================================
   {
     id: 'gastrite_refluxo',
     name: 'Gastrite & Refluxo (DRGE)',
@@ -484,39 +381,45 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '07:30',
         items: [
-          { name: 'Chá de Camomila', quantity: '1 xícara', calories: 0 },
-          { name: 'Torradas (Pão Francês amanhecido/tostado)', quantity: '2 fatias', calories: 120 },
-          { name: 'Queijo Branco Magro (Cottage/Ricota)', quantity: '2 col. sopa', calories: 60 },
-          { name: 'Mamão Papaia', quantity: '1/2 unidade', calories: 60 }
+          { name: 'Chá de Camomila', quantity: '1 xícara (200ml)', calories: 0, substitutions: ['Chá de Erva Doce', 'Leite Desnatado (se tolerar)', 'Água de Coco'] },
+          { name: 'Torradas (Pão Francês amanhecido/tostado)', quantity: '2 fatias (50g)', calories: 120, substitutions: ['Biscoito de Arroz', 'Bolacha de Água e Sal', 'Pão Sírio Tostado'] },
+          { name: 'Queijo Branco Magro (Cottage/Ricota)', quantity: '2 col. sopa (30g)', calories: 60, substitutions: ['Ovo cozido (bem cozido)', 'Requeijão Light', 'Peito de Peru'] },
+          { name: 'Mamão Papaia', quantity: '1/2 unidade (140g)', calories: 60, substitutions: ['Banana Prata', 'Maçã cozida sem casca', 'Pera cozida'] }
         ]
       },
       {
         id: '2', name: 'Lanche da Manhã', time: '10:00',
         items: [
-          { name: 'Banana Prata ou Maçã Cozida', quantity: '1 unidade', calories: 70 }
+          { name: 'Banana Prata ou Maçã Cozida', quantity: '1 unidade', calories: 70, substitutions: ['Pera sem casca', 'Gelatina diet', 'Água de Coco'] }
         ]
       },
       {
         id: '3', name: 'Almoço', time: '12:30',
         items: [
-          { name: 'Arroz Branco (Bem cozido)', quantity: '4 col. sopa', calories: 110 },
-          { name: 'Frango Desfiado ou Grelhado (sem pele/sem fritura)', quantity: '120g', calories: 190 },
-          { name: 'Cenoura e Chuchu Cozidos', quantity: '1 prato sobremesa', calories: 50 },
-          { name: 'Caldo de Feijão (Apenas o caldo)', quantity: '1 concha', calories: 40 }
+          { name: 'Arroz Branco (Bem cozido)', quantity: '4 col. sopa (100g)', calories: 110, substitutions: ['Purê de Batata', 'Macarrão bem cozido', 'Polenta mole'] },
+          { name: 'Frango Desfiado ou Grelhado', quantity: '120g (1 filé)', calories: 190, substitutions: ['Peixe Assado', 'Carne Moída magra', 'Omelete não frito'] },
+          { name: 'Cenoura e Chuchu Cozidos', quantity: '1 prato sobremesa (150g)', calories: 50, substitutions: ['Abobrinha cozida', 'Beterraba cozida', 'Abóbora'] },
+          { name: 'Caldo de Feijão (Apenas o caldo)', quantity: '1 concha', calories: 40, substitutions: ['Lentilha peneirada', 'Não consumir grãos inteiros', 'Creme de legumes'] }
         ]
       },
       {
         id: '4', name: 'Lanche da Tarde', time: '16:00',
         items: [
-          { name: 'Biscoito de Arroz ou Maria', quantity: '4 unidades', calories: 100 },
-          { name: 'Água de Coco', quantity: '1 copo', calories: 40 }
+          { name: 'Biscoito de Arroz ou Maria', quantity: '4 unidades', calories: 100, substitutions: ['Torrada', 'Banana amassada com aveia', 'Gelatina'] },
+          { name: 'Água de Coco', quantity: '1 copo (200ml)', calories: 40, substitutions: ['Chá de Espinheira Santa', 'Suco de Melão', 'Suco de Pera'] }
         ]
       },
       {
         id: '5', name: 'Jantar (Leve - 3h antes de dormir)', time: '19:30',
         items: [
-          { name: 'Sopa de Legumes com Frango', quantity: '1 prato fundo', calories: 200 },
-          { name: 'Batata Cozida', quantity: '1 unidade média', calories: 86 }
+          { name: 'Sopa de Legumes com Frango', quantity: '1 prato fundo (300ml)', calories: 200, substitutions: ['Creme de Abóbora com Frango', 'Peixe grelhado com Purê', 'Canja de Galinha'] },
+          { name: 'Torrada', quantity: '1 unidade', calories: 35, substitutions: ['1 col. de arroz bem cozido', '1 batata pequena'] }
+        ]
+      },
+      {
+        id: '6', name: 'Ceia', time: '22:00',
+        items: [
+          { name: 'Chá de Erva Doce', quantity: '1 xícara', calories: 0, substitutions: ['Chá de Camomila'] }
         ]
       }
     ]
@@ -533,34 +436,40 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '08:00',
         items: [
-          { name: 'Café sem açúcar', quantity: '1 xícara', calories: 5 },
-          { name: 'Ovos Mexidos (Colina)', quantity: '2 unidades', calories: 160 },
-          { name: 'Melão (Baixa frutose)', quantity: '1 fatia', calories: 50 }
+          { name: 'Café sem açúcar', quantity: '1 xícara', calories: 5, substitutions: ['Chá de Boldo', 'Chá Verde', 'Água com Limão'] },
+          { name: 'Ovos Mexidos (Colina)', quantity: '2 unidades', calories: 160, substitutions: ['Queijo Cottage', 'Atum', 'Tofu'] },
+          { name: 'Melão (Baixa frutose)', quantity: '1 fatia', calories: 50, substitutions: ['Morango', 'Abacate', 'Coco fresco'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:00',
         items: [
-          { name: 'Salada de Rúcula (Amargos ajudam o fígado)', quantity: '1/2 prato', calories: 15 },
-          { name: 'Peixe ou Frango', quantity: '120g', calories: 180 },
-          { name: 'Arroz Integral', quantity: '3 col. sopa', calories: 75 },
-          { name: 'Brócolis e Couve-flor', quantity: '1 xícara', calories: 40 },
-          { name: 'Azeite de Oliva', quantity: '1 col. sobremesa', calories: 45 }
+          { name: 'Salada de Rúcula (Amargos ajudam o fígado)', quantity: '1/2 prato', calories: 15, substitutions: ['Agrião', 'Radicchio', 'Almeirão'] },
+          { name: 'Peixe ou Frango', quantity: '120g (1 filé grande)', calories: 180, substitutions: ['Sardinha', 'Carne Magra', 'Ovos'] },
+          { name: 'Arroz Integral', quantity: '3 col. sopa (75g)', calories: 75, substitutions: ['Quinoa', 'Grão de Bico', 'Batata Doce'] },
+          { name: 'Brócolis e Couve-flor', quantity: '1 xícara (100g)', calories: 40, substitutions: ['Couve de Bruxelas', 'Repolho', 'Alcachofra'] },
+          { name: 'Azeite de Oliva', quantity: '1 col. sobremesa (5ml)', calories: 45, substitutions: ['Óleo de Abacate', 'Sementes de girassol', 'Nozes'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Iogurte Natural', quantity: '1 pote', calories: 70 },
-          { name: 'Sementes de Chia', quantity: '1 col. sopa', calories: 55 }
+          { name: 'Iogurte Natural', quantity: '1 pote (160g)', calories: 70, substitutions: ['Kefir', 'Coalhada Seca', 'Leite fermentado'] },
+          { name: 'Sementes de Chia', quantity: '1 col. sopa (10g)', calories: 55, substitutions: ['Linhaça', 'Nozes', 'Castanhas'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Omelete de Espinafre', quantity: '2 ovos', calories: 180 },
-          { name: 'Salada de Tomate', quantity: '1 pires', calories: 30 },
-          { name: 'Abacate', quantity: '2 col. sopa', calories: 60 }
+          { name: 'Omelete de Espinafre', quantity: '2 ovos', calories: 180, substitutions: ['Tofu grelhado', 'Frango desfiado', 'Sopa de Legumes'] },
+          { name: 'Salada de Tomate', quantity: '1 pires', calories: 30, substitutions: ['Pepino', 'Vagem', 'Abobrinha'] },
+          { name: 'Abacate', quantity: '2 col. sopa (40g)', calories: 60, substitutions: ['Azeite', 'Coco seco', 'Castanhas'] }
+        ]
+      },
+      {
+        id: '5', name: 'Ceia', time: '22:00',
+        items: [
+          { name: 'Chá de Boldo ou Alcachofra', quantity: '1 xícara', calories: 0, substitutions: ['Água com limão'] }
         ]
       }
     ]
@@ -577,167 +486,42 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã (30min após Levo)', time: '08:00',
         items: [
-          { name: 'Mingau de Aveia com Frutas', quantity: '1 bowl', calories: 250 },
-          { name: 'Castanha do Pará (Selênio)', quantity: '2 unidades', calories: 60 }
+          { name: 'Mingau de Aveia com Frutas', quantity: '1 bowl pequeno', calories: 250, substitutions: ['Iogurte com Granola', 'Pão sem Glúten com Ovo', 'Tapioca com Chia'] },
+          { name: 'Castanha do Pará (Selênio)', quantity: '2 unidades', calories: 60, substitutions: ['Nozes', 'Amêndoas', 'Semente de Girassol'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:30',
         items: [
-          { name: 'Peixe (Iodo)', quantity: '120g', calories: 180 },
-          { name: 'Quinoa ou Arroz Integral', quantity: '4 col. sopa', calories: 100 },
-          { name: 'Cenoura e Vagem Cozidos', quantity: '1 pires', calories: 50 },
-          { name: 'Feijão', quantity: '1 concha', calories: 90 }
+          { name: 'Peixe (Iodo)', quantity: '120g (1 filé)', calories: 180, substitutions: ['Frango', 'Carne Magra', 'Ovos'] },
+          { name: 'Quinoa ou Arroz Integral', quantity: '4 col. sopa (100g)', calories: 100, substitutions: ['Batata Doce', 'Mandioca', 'Arroz Negro'] },
+          { name: 'Cenoura e Vagem Cozidos', quantity: '1 pires (100g)', calories: 50, substitutions: ['Abobrinha', 'Chuchu', 'Beterraba'] },
+          { name: 'Feijão', quantity: '1 concha (100g)', calories: 90, substitutions: ['Lentilha', 'Grão de Bico', 'Ervilha'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Sementes de Abóbora (Zinco)', quantity: '1 col. sopa', calories: 50 },
-          { name: 'Fruta Cítrica (Kiwi/Laranja)', quantity: '1 unidade', calories: 60 }
+          { name: 'Sementes de Abóbora (Zinco)', quantity: '1 col. sopa (10g)', calories: 50, substitutions: ['Sementes de Girassol', 'Pasta de Amendoim', 'Castanhas'] },
+          { name: 'Fruta Cítrica (Kiwi/Laranja)', quantity: '1 unidade', calories: 60, substitutions: ['Morango', 'Goiaba', 'Tangerina'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Frango Grelhado', quantity: '100g', calories: 165 },
-          { name: 'Purê de Abóbora', quantity: '3 col. sopa', calories: 80 },
-          { name: 'Couve Refogada (Cozida!)', quantity: '1 pires', calories: 60 }
+          { name: 'Frango Grelhado', quantity: '100g (1 filé médio)', calories: 165, substitutions: ['Peixe', 'Omelete', 'Tofu'] },
+          { name: 'Purê de Abóbora', quantity: '3 col. sopa (90g)', calories: 80, substitutions: ['Batata Baroa', 'Inhame', 'Mandioca'] },
+          { name: 'Couve Refogada (Cozida!)', quantity: '1 pires', calories: 60, substitutions: ['Espinafre cozido', 'Acelga refogada', 'Brócolis cozido'] }
+        ]
+      },
+      {
+        id: '5', name: 'Ceia', time: '22:00',
+        items: [
+          { name: 'Kiwi', quantity: '1 unidade', calories: 45, substitutions: ['Morangos', 'Ameixa'] }
         ]
       }
     ]
   },
-  {
-    id: 'acido_urico_gota',
-    name: 'Ácido Úrico / Gota',
-    description: 'Pobre em purinas, frutose e álcool. Rico em laticínios magros e Vit C.',
-    goal: 'Saúde Renal',
-    totalCalories: 1600,
-    macros: { protein: 90, carbs: 200, fats: 50 },
-    generalAdvice: "Beba 3L de água. Evite: Cerveja, Vísceras, Frutos do Mar, Caldos de carne, Refrigerantes. Use laticínios magros.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Leite Desnatado (Uricosúrico)', quantity: '1 copo', calories: 70 },
-          { name: 'Pão Integral', quantity: '2 fatias', calories: 120 },
-          { name: 'Queijo Branco', quantity: '1 fatia', calories: 50 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:30',
-        items: [
-          { name: 'Arroz e Feijão (Moderado)', quantity: '4 col. arroz + 1/2 concha feijão', calories: 150 },
-          { name: 'Ovos Cozidos (Seguro)', quantity: '2 unidades', calories: 155 },
-          { name: 'Salada Crua', quantity: '1/2 prato', calories: 30 },
-          { name: 'Laranja/Acerola (Vit C)', quantity: '1 unidade', calories: 60 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Iogurte Natural', quantity: '1 pote', calories: 70 },
-          { name: 'Cerejas ou Morangos (Anti-inflamatório)', quantity: '10 unidades', calories: 50 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Macarrão com Legumes', quantity: '1 prato raso', calories: 250 },
-          { name: 'Peito de Frango (Sem pele)', quantity: '100g', calories: 165 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'constipacao_fibras',
-    name: 'Constipação (Intestino Preso)',
-    description: 'Laxativo natural: Alto teor de fibras insolúveis, água e gorduras boas.',
-    goal: 'Saúde Intestinal',
-    totalCalories: 1700,
-    macros: { protein: 100, carbs: 200, fats: 60 },
-    generalAdvice: "Fórmula mágica: Fibra + Água + Gordura. Consuma mamão, ameixa, azeite cru e beba 3L de água.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Mamão com Aveia/Psyllium', quantity: '1/2 papaia + 1 col. sopa', calories: 90 },
-          { name: 'Iogurte Natural (Probiótico)', quantity: '1 pote', calories: 70 },
-          { name: 'Ovos mexidos', quantity: '1 unidade', calories: 80 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:30',
-        items: [
-          { name: 'Salada de Folhas (Crua)', quantity: '1 prato cheio', calories: 30 },
-          { name: 'Azeite de Oliva (Cru - Importante)', quantity: '1 col. sobremesa', calories: 45 },
-          { name: 'Arroz Integral', quantity: '4 col. sopa', calories: 100 },
-          { name: 'Feijão (Rico em fibra)', quantity: '1 concha cheia', calories: 100 },
-          { name: 'Carne/Frango', quantity: '100g', calories: 180 },
-          { name: 'Laranja com bagaço', quantity: '1 unidade', calories: 60 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Ameixa Preta Seca', quantity: '3 unidades', calories: 60 },
-          { name: 'Castanhas/Nozes (Gordura boa)', quantity: '30g', calories: 180 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Abóbora Cabotiá com Casca', quantity: '3 pedaços', calories: 80 },
-          { name: 'Frango Grelhado', quantity: '100g', calories: 165 },
-          { name: 'Couve Refogada', quantity: '1 pires', calories: 60 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'sarcopenia_idoso',
-    name: 'Sarcopenia (Idosos)',
-    description: 'Alto fracionamento proteico para manutenção muscular em idosos.',
-    goal: 'Manutenção Muscular',
-    totalCalories: 1600,
-    macros: { protein: 130, carbs: 170, fats: 50 },
-    generalAdvice: "Proteína em TODAS as refeições (min 20g). Exercício de força é essencial. Textura adaptada se houver disfagia.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Leite com Whey Protein ou Leite em Pó', quantity: '1 copo reforçado', calories: 150 },
-          { name: 'Pão macio com Queijo', quantity: '1 unidade', calories: 180 },
-          { name: 'Mamão amassado', quantity: '1 fatia', calories: 50 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:00',
-        items: [
-          { name: 'Carne Moída ou Desfiada (Fácil mastigação)', quantity: '120g', calories: 220 },
-          { name: 'Purê de Batata/Mandioca', quantity: '3 col. servir', calories: 150 },
-          { name: 'Feijão (Caldo grosso)', quantity: '1 concha', calories: 90 },
-          { name: 'Legumes bem cozidos', quantity: '1 pires', calories: 40 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche da Tarde', time: '15:30',
-        items: [
-          { name: 'Mingau de Aveia com Ovos/Claras (Salgar ou Doce)', quantity: '1 prato', calories: 200 },
-          { name: 'Ou: Iogurte Proteico', quantity: '1 unidade', calories: 120 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '19:30',
-        items: [
-          { name: 'Omelete (2 ovos) com Queijo', quantity: '1 unidade', calories: 220 },
-          { name: 'Sopa de Legumes batida ou pedaços', quantity: '1 prato', calories: 100 }
-        ]
-      }
-    ]
-  },
-
-  // --- EXISTENTES (Mantidos abaixo) ---
   {
     id: 'diabetes_lowcarb',
     name: 'Diabetes & Resistência à Insulina',
@@ -750,42 +534,42 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '07:30',
         items: [
-          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160 },
-          { name: 'Queijo Minas Curado', quantity: '30g (2 fatias)', calories: 110 },
-          { name: 'Café sem açúcar', quantity: '1 xícara', calories: 5 }
+          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160, substitutions: ['Queijo Coalho assado', 'Crepioca (1 ovo + 10g tapioca)', 'Omelete de queijo'] },
+          { name: 'Queijo Minas Curado', quantity: '30g (2 fatias)', calories: 110, substitutions: ['Parmesão', 'Provolone', 'Meia cura'] },
+          { name: 'Café sem açúcar', quantity: '1 xícara', calories: 5, substitutions: ['Chá de Canela', 'Chá Mate', 'Água com limão'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:30',
         items: [
-          { name: 'Salada de Folhas Verdes', quantity: 'Prato cheio', calories: 20 },
-          { name: 'Azeite de Oliva', quantity: '1 col. sobremesa', calories: 45 },
-          { name: 'Brócolis no Vapor', quantity: '1 xícara', calories: 35 },
-          { name: 'Peito de Frango Grelhado', quantity: '120g', calories: 195 },
-          { name: 'Feijão Preto (somente grãos)', quantity: '2 col. sopa', calories: 40 }
+          { name: 'Salada de Folhas Verdes', quantity: 'Prato cheio', calories: 20, substitutions: ['Mix de folhas', 'Repolho cru', 'Rúcula'] },
+          { name: 'Azeite de Oliva', quantity: '1 col. sobremesa', calories: 45, substitutions: ['Abacate', 'Azeitonas', 'Castanhas'] },
+          { name: 'Brócolis no Vapor', quantity: '1 xícara', calories: 35, substitutions: ['Couve-flor', 'Abobrinha', 'Vagem'] },
+          { name: 'Peito de Frango Grelhado', quantity: '120g (1 filé grande)', calories: 195, substitutions: ['Carne Bovina', 'Peixe Gordo', 'Porco'] },
+          { name: 'Feijão Preto (somente grãos)', quantity: '2 col. sopa', calories: 40, substitutions: ['Lentilha', 'Grão de Bico', 'Não consumir'] }
         ]
       },
       {
         id: '3', name: 'Lanche da Tarde', time: '16:00',
         items: [
-          { name: 'Iogurte Natural', quantity: '1 pote (170g)', calories: 90 },
-          { name: 'Sementes de Chia', quantity: '1 col. sopa', calories: 55 },
-          { name: 'Morangos', quantity: '5 unidades', calories: 25 }
+          { name: 'Iogurte Natural', quantity: '1 pote (170g)', calories: 90, substitutions: ['Kefir', 'Coalhada', 'Queijo branco'] },
+          { name: 'Sementes de Chia', quantity: '1 col. sopa', calories: 55, substitutions: ['Linhaça', 'Psyllium', 'Semente de Girassol'] },
+          { name: 'Morangos', quantity: '5 unidades', calories: 25, substitutions: ['Coco Seco', 'Mirtilos', 'Amoras'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Omelete (2 ovos + espinafre)', quantity: '1 unidade', calories: 180 },
-          { name: 'Salada de Tomate e Pepino', quantity: '1 pires', calories: 30 },
-          { name: 'Abacate', quantity: '2 col. sopa', calories: 60 }
+          { name: 'Omelete (2 ovos + espinafre)', quantity: '1 unidade', calories: 180, substitutions: ['Sopa de Legumes Low Carb', 'Peixe Assado', 'Frango desfiado com abobrinha'] },
+          { name: 'Salada de Tomate e Pepino', quantity: '1 pires', calories: 30, substitutions: ['Berinjela Assada', 'Quiabo', 'Vagem'] },
+          { name: 'Abacate', quantity: '2 col. sopa (40g)', calories: 60, substitutions: ['Castanhas', 'Azeite', 'Coco'] }
         ]
       },
       {
         id: '5', name: 'Ceia', time: '22:30',
         items: [
-          { name: 'Chá de Camomila', quantity: '1 xícara', calories: 0 },
-          { name: 'Castanha do Pará', quantity: '2 unidades', calories: 60 }
+          { name: 'Chá de Camomila', quantity: '1 xícara', calories: 0, substitutions: ['Chá de Melissa', 'Mulungu'] },
+          { name: 'Castanha do Pará', quantity: '2 unidades', calories: 60, substitutions: ['5 Amêndoas', '1 pedaço de Queijo', 'Nozes'] }
         ]
       }
     ]
@@ -802,35 +586,42 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '08:00',
         items: [
-          { name: 'Mingau de Aveia (Leite desn. + Farelo de Aveia)', quantity: '1 tigela média', calories: 220 },
-          { name: 'Maçã com Casca', quantity: '1 unidade média', calories: 70 },
-          { name: 'Canela em pó', quantity: 'a gosto', calories: 0 }
+          { name: 'Mingau de Aveia (Leite desn. + Farelo de Aveia)', quantity: '1 tigela média', calories: 220, substitutions: ['Iogurte com Granola s/ açúcar', 'Pão Integral com Queijo Cottage', 'Vitamina de fruta com aveia'] },
+          { name: 'Maçã com Casca', quantity: '1 unidade média', calories: 70, substitutions: ['Pera', 'Laranja com bagaço', 'Mamão'] },
+          { name: 'Canela em pó', quantity: 'a gosto', calories: 0, substitutions: ['Cacau em pó', 'Gengibre'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:30',
         items: [
-          { name: 'Arroz Integral', quantity: '4 col. sopa', calories: 100 },
-          { name: 'Feijão Carioca', quantity: '1 concha', calories: 90 },
-          { name: 'Peixe Grelhado (Tilápia/Sardinha)', quantity: '120g', calories: 150 },
-          { name: 'Cenoura e Vagem cozidos', quantity: '1 pires', calories: 45 },
-          { name: 'Laranja (sobremesa)', quantity: '1 unidade', calories: 60 }
+          { name: 'Arroz Integral', quantity: '4 col. sopa (100g)', calories: 100, substitutions: ['Quinoa', 'Milho', 'Trigo em grão'] },
+          { name: 'Feijão Carioca', quantity: '1 concha (100g)', calories: 90, substitutions: ['Soja', 'Lentilha', 'Grão de Bico'] },
+          { name: 'Peixe Grelhado (Tilápia/Sardinha)', quantity: '120g (1 filé grande)', calories: 150, substitutions: ['Peito de Frango', 'Atum', 'Claras de ovo'] },
+          { name: 'Cenoura e Vagem cozidos', quantity: '1 pires (100g)', calories: 45, substitutions: ['Berinjela e Abobrinha', 'Beterraba crua', 'Quiabo'] },
+          { name: 'Laranja (sobremesa)', quantity: '1 unidade', calories: 60, substitutions: ['Mexerica', 'Abacaxi', 'Melancia'] }
         ]
       },
       {
         id: '3', name: 'Lanche da Tarde', time: '16:00',
         items: [
-          { name: 'Mamão Papaia', quantity: '1/2 unidade', calories: 60 },
-          { name: 'Farelo de Aveia', quantity: '1 col. sopa', calories: 35 },
-          { name: 'Nozes', quantity: '3 unidades', calories: 80 }
+          { name: 'Mamão Papaia', quantity: '1/2 unidade', calories: 60, substitutions: ['Banana', 'Melão', 'Ameixa'] },
+          { name: 'Farelo de Aveia', quantity: '1 col. sopa', calories: 35, substitutions: ['Psyllium', 'Linhaça', 'Chia'] },
+          { name: 'Nozes', quantity: '3 unidades', calories: 80, substitutions: ['Castanhas', 'Amêndoas (sem sal)', 'Pistache'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '19:30',
         items: [
-          { name: 'Salada de Grão de Bico com Atum', quantity: '1 prato fundo', calories: 280 },
-          { name: 'Azeite de Oliva Extra Virgem', quantity: '1 col. sobremesa (cru)', calories: 45 },
-          { name: 'Folhas Verdes', quantity: 'à vontade', calories: 15 }
+          { name: 'Salada de Grão de Bico com Atum', quantity: '1 prato fundo', calories: 280, substitutions: ['Sanduíche de Pão Integral com Frango', 'Sopa de Legumes e Aveia', 'Peixe com salada'] },
+          { name: 'Azeite de Oliva Extra Virgem', quantity: '1 col. sobremesa (cru)', calories: 45, substitutions: ['1/4 Abacate', 'Óleo de Linhaça', 'Sementes'] },
+          { name: 'Folhas Verdes', quantity: 'à vontade', calories: 15, substitutions: ['Tomate e Pepino', 'Rúcula', 'Agrião'] }
+        ]
+      },
+      {
+        id: '5', name: 'Ceia', time: '22:00',
+        items: [
+          { name: 'Chá Verde (se tolerar) ou Hibisco', quantity: '1 xícara', calories: 0, substitutions: ['Chá de Casca de Abacaxi'] },
+          { name: 'Abacate', quantity: '1 col. sopa (20g)', calories: 40, substitutions: ['1 noz', '2 amêndoas'] }
         ]
       }
     ]
@@ -847,364 +638,41 @@ export const MealPlanTemplates: MealPlanTemplate[] = [
       {
         id: '1', name: 'Café da Manhã', time: '07:30',
         items: [
-          { name: 'Suco Verde (Couve + Laranja)', quantity: '1 copo (300ml)', calories: 110 },
-          { name: 'Pão Integral', quantity: '2 fatias', calories: 120 },
-          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160 }
+          { name: 'Suco Verde (Couve + Laranja)', quantity: '1 copo (300ml)', calories: 110, substitutions: ['Suco de Abacaxi com Hortelã', 'Vitamina de Acerola', 'Suco de Caju'] },
+          { name: 'Pão Integral', quantity: '2 fatias', calories: 120, substitutions: ['Tapioca com chia', 'Cuscuz', 'Batata Doce'] },
+          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160, substitutions: ['Patê de Atum', 'Frango desfiado', 'Humus'] }
         ]
       },
       {
         id: '2', name: 'Almoço', time: '12:30',
         items: [
-          { name: 'Carne Bovina (Patinho/Músculo)', quantity: '120g', calories: 220 },
-          { name: 'Feijão Preto (com caldo)', quantity: '1 concha e meia', calories: 140 },
-          { name: 'Arroz Branco ou Integral', quantity: '4 col. sopa', calories: 110 },
-          { name: 'Couve Refogada', quantity: '3 col. sopa', calories: 50 },
-          { name: 'Abacaxi (sobremesa - Vitamina C)', quantity: '2 fatias', calories: 80 }
+          { name: 'Carne Bovina (Patinho/Músculo)', quantity: '120g (1 bife médio)', calories: 220, substitutions: ['Fígado bovino (1x semana)', 'Sobrecoxa de frango', 'Moela'] },
+          { name: 'Feijão Preto (com caldo)', quantity: '1 concha e meia', calories: 140, substitutions: ['Lentilha', 'Feijão Carioca', 'Feijão Branco'] },
+          { name: 'Arroz Branco ou Integral', quantity: '4 col. sopa (100g)', calories: 110, substitutions: ['Batata', 'Mandioca', 'Macarrão'] },
+          { name: 'Couve Refogada', quantity: '3 col. sopa (70g)', calories: 50, substitutions: ['Espinafre', 'Brócolis', 'Agrião'] },
+          { name: 'Abacaxi (sobremesa - Vitamina C)', quantity: '2 fatias', calories: 80, substitutions: ['Laranja', 'Tangerina', 'Morango'] }
         ]
       },
       {
         id: '3', name: 'Lanche', time: '16:00',
         items: [
-          { name: 'Sanduíche de Pasta de Homus', quantity: '1 und', calories: 200 },
-          { name: 'Suco de Acerola', quantity: '1 copo', calories: 60 }
+          { name: 'Sanduíche de Pasta de Homus', quantity: '1 und', calories: 200, substitutions: ['Pão com Ovo', 'Iogurte com Aveia', 'Vitamina'] },
+          { name: 'Suco de Acerola', quantity: '1 copo (200ml)', calories: 60, substitutions: ['Suco de Caju', 'Goiaba', 'Laranja'] }
         ]
       },
       {
         id: '4', name: 'Jantar', time: '20:00',
         items: [
-          { name: 'Iscas de Fígado Acebolado (1x semana) ou Frango', quantity: '100g', calories: 180 },
-          { name: 'Purê de Abóbora', quantity: '3 col. servir', calories: 120 },
-          { name: 'Lentilha Cozida', quantity: '3 col. sopa', calories: 80 },
-          { name: 'Mexerica (sobremesa)', quantity: '1 unidade', calories: 50 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'hipertrofia_masc',
-    name: 'Hipertrofia Padrão (Masculino)',
-    description: 'Alto teor proteico e superávit calórico moderado.',
-    goal: 'Ganho de Peso',
-    totalCalories: 2600,
-    macros: { protein: 180, carbs: 320, fats: 75 },
-    generalAdvice: "Consistência é chave. Não pule refeições pré/pós treino. Beba pelo menos 3L de água.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '07:00',
-        items: [
-          { name: 'Pão Francês', quantity: '2 unidades', calories: 270 },
-          { name: 'Ovos Mexidos', quantity: '3 unidades', calories: 240 },
-          { name: 'Queijo Minas', quantity: '2 fatias', calories: 100 },
-          { name: 'Banana Prata', quantity: '1 unidade', calories: 70 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:30',
-        items: [
-          { name: 'Arroz Branco', quantity: '200g (6 col. sopa)', calories: 260 },
-          { name: 'Feijão', quantity: '1 concha cheia', calories: 100 },
-          { name: 'Peito de Frango Grelhado', quantity: '150g', calories: 240 },
-          { name: 'Salada Variada', quantity: 'à vontade', calories: 30 },
-          { name: 'Azeite de Oliva', quantity: '1 col. sopa', calories: 90 }
-        ]
-      },
-      {
-        id: '3', name: 'Pré-Treino', time: '16:00',
-        items: [
-          { name: 'Banana amassada com Aveia', quantity: '2 bananas + 30g aveia', calories: 250 },
-          { name: 'Doce de Leite', quantity: '1 col. sopa (opcional)', calories: 60 }
-        ]
-      },
-      {
-        id: '4', name: 'Pós-Treino (Jantar)', time: '20:00',
-        items: [
-          { name: 'Batata Inglesa Cozida', quantity: '300g', calories: 260 },
-          { name: 'Carne Moída (Patinho)', quantity: '150g', calories: 330 },
-          { name: 'Legumes Cozidos', quantity: '1 xícara', calories: 50 }
-        ]
-      },
-      {
-        id: '5', name: 'Ceia', time: '23:00',
-        items: [
-          { name: 'Iogurte Natural ou Whey', quantity: '1 porção', calories: 120 },
-          { name: 'Pasta de Amendoim', quantity: '1 col. sopa', calories: 90 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'emagrecimento_fem',
-    name: 'Emagrecimento (1400 kcal)',
-    description: 'Déficit calórico com alto volume de vegetais e proteínas.',
-    goal: 'Perda de Peso',
-    totalCalories: 1400,
-    macros: { protein: 110, carbs: 130, fats: 50 },
-    generalAdvice: "Foco na saciedade: coma devagar e beba água antes das refeições. Evite beliscar fora dos horários.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Mamão Papaia', quantity: '1/2 unidade', calories: 60 },
-          { name: 'Ovos Cozidos/Mexidos', quantity: '2 unidades', calories: 155 },
-          { name: 'Café preto', quantity: '1 xícara', calories: 0 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:00',
-        items: [
-          { name: 'Salada de Folhas + Tomate', quantity: '1/2 prato', calories: 25 },
-          { name: 'Legumes Cozidos (Vagem/Cenoura)', quantity: '1 pires', calories: 40 },
-          { name: 'Arroz Integral', quantity: '3 col. sopa', calories: 75 },
-          { name: 'Feijão', quantity: '1/2 concha', calories: 45 },
-          { name: 'Filé de Frango', quantity: '120g', calories: 190 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche da Tarde', time: '16:00',
-        items: [
-          { name: 'Iogurte Natural Desnatado', quantity: '1 pote', calories: 70 },
-          { name: 'Morango picado', quantity: '1 xícara', calories: 45 },
-          { name: 'Farelo de Aveia', quantity: '1 col. sobremesa', calories: 30 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Sopa de Legumes com Frango', quantity: '1 prato fundo', calories: 250 },
-          { name: 'ou: Omelete de 2 ovos com salada', quantity: '1 unidade', calories: 250 }
-        ]
-      },
-      {
-        id: '5', name: 'Ceia (Opcional)', time: '22:00',
-        items: [
-          { name: 'Chá de Melissa', quantity: '1 xícara', calories: 0 },
-          { name: 'Kiwi', quantity: '1 unidade', calories: 45 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'vegetariano_ovolacto',
-    name: 'Vegetariano Ovolactovegetariano',
-    description: 'Dieta sem carnes, com ovos, laticínios e foco em ferro vegetal.',
-    goal: 'Manutenção',
-    totalCalories: 1800,
-    macros: { protein: 95, carbs: 220, fats: 60 },
-    generalAdvice: "Atenção à ingestão de Vitamina C junto com feijões e folhas escuras para melhorar absorção do ferro. Monitore a B12.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160 },
-          { name: 'Pão Integral', quantity: '2 fatias', calories: 120 },
-          { name: 'Mamão com Chia', quantity: '1 fatia + 1 col. sopa', calories: 90 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:30',
-        items: [
-          { name: 'Arroz Integral', quantity: '4 col. sopa', calories: 100 },
-          { name: 'Feijão Preto (Concha cheia)', quantity: '1 concha', calories: 90 },
-          { name: 'Omelete de Espinafre ou Queijo Coalho', quantity: '1 unidade/fatia', calories: 180 },
-          { name: 'Couve Refogada (Ferro)', quantity: '1 pires', calories: 60 },
-          { name: 'Laranja (Sobremesa)', quantity: '1 unidade', calories: 60 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Iogurte Natural com Mel', quantity: '1 pote + 1 fio de mel', calories: 110 },
-          { name: 'Castanha de Caju', quantity: '5 unidades', calories: 60 },
-          { name: 'Banana', quantity: '1 unidade', calories: 70 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Lentilha Cozida', quantity: '4 col. sopa', calories: 100 },
-          { name: 'Purê de Abóbora', quantity: '3 col. sopa', calories: 80 },
-          { name: 'Brócolis e Cenoura', quantity: '1 prato sobremesa', calories: 50 },
-          { name: 'Ovo cozido', quantity: '1 unidade', calories: 78 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'low_fodmap',
-    name: 'Low FODMAP (SII / Gases)',
-    description: 'Protocolo de exclusão de alimentos fermentáveis (4 semanas).',
-    goal: 'Saúde Intestinal',
-    totalCalories: 1600,
-    macros: { protein: 110, carbs: 180, fats: 50 },
-    generalAdvice: "Evite: Alho, cebola, feijões, trigo, leite (lactose) e frutas como maçã/pera. Use cebolinha (parte verde) para temperar.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '07:30',
-        items: [
-          { name: 'Pão sem Glúten ou Tapioca', quantity: '1 unidade', calories: 150 },
-          { name: 'Ovos Mexidos', quantity: '2 unidades', calories: 160 },
-          { name: 'Melão ou Mamão (Frutas permitidas)', quantity: '1 fatia', calories: 60 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:30',
-        items: [
-          { name: 'Arroz Branco', quantity: '4 col. sopa', calories: 110 },
-          { name: 'Frango Grelhado (Temperado com sal e ervas)', quantity: '120g', calories: 190 },
-          { name: 'Cenoura e Abobrinha (Cozidos)', quantity: '1 pires', calories: 45 },
-          { name: 'Azeite de Oliva', quantity: '1 col. sobremesa', calories: 45 },
-          { name: 'Não consumir feijão nesta fase', quantity: '-', calories: 0 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Banana Prata (Não muito madura)', quantity: '1 unidade', calories: 70 },
-          { name: 'Leite Zero Lactose ou Vegetal', quantity: '1 copo', calories: 80 },
-          { name: 'Nozes (max 3 unidades)', quantity: '3 unidades', calories: 80 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Batata Inglesa Cozida', quantity: '2 unidades pequenas', calories: 140 },
-          { name: 'Peixe ou Frango', quantity: '100g', calories: 150 },
-          { name: 'Espinafre e Tomate', quantity: '1 pires', calories: 30 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'dash_hipertensao',
-    name: 'DASH (Hipertensão)',
-    description: 'Foco em potássio, cálcio e baixo sódio para controle da pressão.',
-    goal: 'Hipertensão',
-    totalCalories: 1700,
-    macros: { protein: 100, carbs: 220, fats: 50 },
-    generalAdvice: "Evite sal de adição, embutidos e temperos prontos. Abuse de frutas, verduras e laticínios magros.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '07:30',
-        items: [
-          { name: 'Leite Desnatado (Cálcio)', quantity: '1 copo (200ml)', calories: 70 },
-          { name: 'Banana (Potássio)', quantity: '1 unidade', calories: 70 },
-          { name: 'Aveia', quantity: '2 col. sopa', calories: 60 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:00',
-        items: [
-          { name: 'Salada Crua Variada (Muito volume)', quantity: '1/2 prato', calories: 30 },
-          { name: 'Peixe Assado ou Grelhado', quantity: '120g', calories: 180 },
-          { name: 'Batata Doce ou Inhame', quantity: '2 pedaços', calories: 120 },
-          { name: 'Feijão (Pouco sal)', quantity: '1 concha', calories: 90 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '15:30',
-        items: [
-          { name: 'Iogurte Natural Desnatado', quantity: '1 pote', calories: 70 },
-          { name: 'Melão', quantity: '1 fatia grande', calories: 60 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '19:30',
-        items: [
-          { name: 'Sopa de Legumes (Sem caldo Knorr)', quantity: '1 prato fundo', calories: 150 },
-          { name: 'Frango Desfiado na sopa', quantity: '3 col. sopa', calories: 100 },
-          { name: 'Torrada Integral (sem sal)', quantity: '2 unidades', calories: 70 }
+          { name: 'Iscas de Fígado Acebolado (1x semana) ou Frango', quantity: '100g', calories: 180, substitutions: ['Carne Moída', 'Omelete com Espinafre', 'Peixe'] },
+          { name: 'Purê de Abóbora', quantity: '3 col. servir (150g)', calories: 120, substitutions: ['Batata Doce', 'Inhame', 'Mandioca'] },
+          { name: 'Lentilha Cozida', quantity: '3 col. sopa (75g)', calories: 80, substitutions: ['Feijão', 'Grão de Bico', 'Ervilha'] },
+          { name: 'Mexerica (sobremesa)', quantity: '1 unidade', calories: 50, substitutions: ['Kiwi', 'Manga', 'Goiaba'] }
         ]
       },
       {
         id: '5', name: 'Ceia', time: '22:00',
         items: [
-          { name: 'Água de Coco (Potássio)', quantity: '1 copo', calories: 40 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'sopa_anti_inflamatoria',
-    name: 'SOP & Endometriose (Anti-inflamatório)',
-    description: 'Baixo índice glicêmico, sem glúten e rico em antioxidantes.',
-    goal: 'Anti-inflamatória',
-    totalCalories: 1500,
-    macros: { protein: 100, carbs: 120, fats: 65 },
-    generalAdvice: "Evite potes plásticos (BPA). Priorize cúrcuma, gengibre e ômega-3. Evite açúcar e farinha branca.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Suco Verde (Couve, Limão, Gengibre)', quantity: '1 copo', calories: 60 },
-          { name: 'Ovos Mexidos com Cúrcuma', quantity: '2 ovos', calories: 160 },
-          { name: 'Morangos', quantity: '1 xícara', calories: 45 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:30',
-        items: [
-          { name: 'Salada de Rúcula e Tomate', quantity: '1/2 prato', calories: 25 },
-          { name: 'Sardinha ou Salmão (Ômega 3)', quantity: '100g', calories: 180 },
-          { name: 'Quinoa ou Arroz Negro', quantity: '3 col. sopa', calories: 80 },
-          { name: 'Brócolis (Detox)', quantity: '1 xícara', calories: 35 },
-          { name: 'Azeite Extra Virgem', quantity: '1 col. sobremesa', calories: 45 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Abacate', quantity: '3 col. sopa', calories: 90 },
-          { name: 'Sementes de Abóbora', quantity: '1 col. sopa', calories: 50 },
-          { name: 'Chá de Hortelã', quantity: '1 xícara', calories: 0 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Creme de Abóbora com Gengibre', quantity: '1 prato fundo', calories: 180 },
-          { name: 'Frango Desfiado', quantity: '3 col. sopa', calories: 100 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'cetogenica_std',
-    name: 'Dieta Cetogênica (Standard)',
-    description: 'Indução de cetose: Alta gordura, proteína moderada, carbo mínimo (<30g).',
-    goal: 'Perda de Peso Rápida',
-    totalCalories: 1600,
-    macros: { protein: 90, carbs: 25, fats: 125 },
-    generalAdvice: "Beba muita água e reponha sal (sódio) moderadamente. Evite raízes, grãos, frutas doces e açúcar.",
-    meals: [
-      {
-        id: '1', name: 'Café da Manhã', time: '08:00',
-        items: [
-          { name: 'Ovos Mexidos com Bacon', quantity: '2 ovos + 1 fatia bacon', calories: 220 },
-          { name: 'Café com Óleo de Coco', quantity: '1 xícara + 1 col. chá', calories: 40 }
-        ]
-      },
-      {
-        id: '2', name: 'Almoço', time: '12:30',
-        items: [
-          { name: 'Sobre-coxa de Frango com pele', quantity: '1 unidade média', calories: 230 },
-          { name: 'Brócolis e Couve-flor (Low carb)', quantity: '1 xícara', calories: 40 },
-          { name: 'Azeite de Oliva (bastante)', quantity: '1 col. sopa cheia', calories: 110 },
-          { name: 'Salada de Folhas Verdes', quantity: 'À vontade', calories: 15 }
-        ]
-      },
-      {
-        id: '3', name: 'Lanche', time: '16:00',
-        items: [
-          { name: 'Castanhas do Pará/Caju', quantity: '30g (um punhado)', calories: 180 },
-          { name: 'Queijo Parmesão ou Provolone', quantity: '30g (cubos)', calories: 120 }
-        ]
-      },
-      {
-        id: '4', name: 'Jantar', time: '20:00',
-        items: [
-          { name: 'Omelete Recheado (Queijo e Presunto)', quantity: '2 ovos + recheio', calories: 280 },
-          { name: 'Abacate', quantity: '2 col. sopa', calories: 90 },
-          { name: 'Salada de Alface', quantity: '1 prato', calories: 10 }
+          { name: 'Ameixa Seca', quantity: '3 unidades', calories: 60, substitutions: ['Damasco', 'Uva Passa'] }
         ]
       }
     ]

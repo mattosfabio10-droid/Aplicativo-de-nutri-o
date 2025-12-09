@@ -1,9 +1,6 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Patient, MealPlan } from "../types";
 
-// Note: In a real environment, never expose keys on the client.
-// We are using process.env.API_KEY as per instructions.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 // Extendendo o tipo Patient apenas localmente para aceitar o campo opcional de calorias manuais

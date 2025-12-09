@@ -1,33 +1,49 @@
+
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AppProvider, useApp } from './context/AppContext';
+import { AppProvider } from './context/AppContext';
 import { AppRoutes } from './types';
 
-// Screens (Imports simplificados, assumindo que os arquivos existem conforme XML)
-import Login from './screens/Login';
+// Screens
 import Dashboard from './screens/Dashboard';
 import PatientList from './screens/PatientList';
-import Agenda from './screens/Agenda';
 import AIMealPlan from './screens/AIMealPlan';
+import Anthropometry from './screens/Anthropometry';
 import Bioimpedance from './screens/Bioimpedance';
-// ... outros imports seriam necessários na versão final completa
+import SubstitutionList from './screens/SubstitutionList';
+import Anamnesis from './screens/Anamnesis';
+import Protocols from './screens/Protocols';
+import Guidelines from './screens/Guidelines';
+import Certificates from './screens/Certificates';
+import LabAnalysis from './screens/LabAnalysis';
+import Agenda from './screens/Agenda';
+import FormManager from './screens/FormManager';
+import Calculators from './screens/Calculators';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useApp();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/" />;
-};
-
+// Force refresh logic
 const AppRoutesComponent = () => {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path={AppRoutes.DASHBOARD} element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-      <Route path={AppRoutes.PATIENTS} element={<ProtectedRoute><PatientList /></ProtectedRoute>} />
-      <Route path={AppRoutes.AGENDA} element={<ProtectedRoute><Agenda /></ProtectedRoute>} />
-      <Route path={AppRoutes.MEAL_PLAN_AI} element={<ProtectedRoute><AIMealPlan /></ProtectedRoute>} />
-      <Route path={AppRoutes.BIOIMPEDANCE} element={<ProtectedRoute><Bioimpedance /></ProtectedRoute>} />
-      {/* Fallbacks para telas não implementadas neste XML massivo mas citadas */}
-      <Route path="*" element={<Navigate to="/dashboard" />} />
+      {/* Redireciona a raiz direto para o Dashboard */}
+      <Route path="/" element={<Navigate to={AppRoutes.DASHBOARD} replace />} />
+      
+      <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
+      <Route path={AppRoutes.AGENDA} element={<Agenda />} />
+      <Route path={AppRoutes.PATIENTS} element={<PatientList />} />
+      <Route path={AppRoutes.MEAL_PLAN_AI} element={<AIMealPlan />} />
+      <Route path={AppRoutes.ANTHROPOMETRY} element={<Anthropometry />} />
+      <Route path={AppRoutes.BIOIMPEDANCE} element={<Bioimpedance />} />
+      <Route path={AppRoutes.SUBSTITUTIONS} element={<SubstitutionList />} />
+      <Route path={AppRoutes.ANAMNESIS} element={<Anamnesis />} />
+      <Route path={AppRoutes.PROTOCOLS} element={<Protocols />} />
+      <Route path={AppRoutes.GUIDELINES} element={<Guidelines />} />
+      <Route path={AppRoutes.CERTIFICATES} element={<Certificates />} />
+      <Route path={AppRoutes.LAB_ANALYSIS} element={<LabAnalysis />} />
+      <Route path={AppRoutes.FORM_MANAGER} element={<FormManager />} />
+      <Route path={AppRoutes.CALCULATORS} element={<Calculators />} />
+      
+      {/* Fallback para qualquer rota desconhecida ir para o dashboard */}
+      <Route path="*" element={<Navigate to={AppRoutes.DASHBOARD} />} />
     </Routes>
   );
 };

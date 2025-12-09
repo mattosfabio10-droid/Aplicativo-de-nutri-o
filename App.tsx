@@ -1,10 +1,10 @@
+
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AppProvider, useApp } from './context/AppContext';
+import { AppProvider } from './context/AppContext';
 import { AppRoutes } from './types';
 
 // Screens
-import Login from './screens/Login';
 import Dashboard from './screens/Dashboard';
 import PatientList from './screens/PatientList';
 import AIMealPlan from './screens/AIMealPlan';
@@ -17,57 +17,33 @@ import Guidelines from './screens/Guidelines';
 import Certificates from './screens/Certificates';
 import LabAnalysis from './screens/LabAnalysis';
 import Agenda from './screens/Agenda';
+import FormManager from './screens/FormManager';
+import Calculators from './screens/Calculators';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useApp();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/" />;
-};
-
+// Force refresh logic
 const AppRoutesComponent = () => {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/patient-area" element={<Login />} /> {/* Placeholder for patient area login */}
+      {/* Redireciona a raiz direto para o Dashboard */}
+      <Route path="/" element={<Navigate to={AppRoutes.DASHBOARD} replace />} />
       
-      <Route path={AppRoutes.DASHBOARD} element={
-        <ProtectedRoute><Dashboard /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.AGENDA} element={
-        <ProtectedRoute><Agenda /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.PATIENTS} element={
-        <ProtectedRoute><PatientList /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.MEAL_PLAN_AI} element={
-        <ProtectedRoute><AIMealPlan /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.ANTHROPOMETRY} element={
-        <ProtectedRoute><Anthropometry /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.BIOIMPEDANCE} element={
-        <ProtectedRoute><Bioimpedance /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.SUBSTITUTIONS} element={
-        <ProtectedRoute><SubstitutionList /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.ANAMNESIS} element={
-        <ProtectedRoute><Anamnesis /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.PROTOCOLS} element={
-        <ProtectedRoute><Protocols /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.GUIDELINES} element={
-        <ProtectedRoute><Guidelines /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.CERTIFICATES} element={
-        <ProtectedRoute><Certificates /></ProtectedRoute>
-      } />
-      <Route path={AppRoutes.LAB_ANALYSIS} element={
-        <ProtectedRoute><LabAnalysis /></ProtectedRoute>
-      } />
+      <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
+      <Route path={AppRoutes.AGENDA} element={<Agenda />} />
+      <Route path={AppRoutes.PATIENTS} element={<PatientList />} />
+      <Route path={AppRoutes.MEAL_PLAN_AI} element={<AIMealPlan />} />
+      <Route path={AppRoutes.ANTHROPOMETRY} element={<Anthropometry />} />
+      <Route path={AppRoutes.BIOIMPEDANCE} element={<Bioimpedance />} />
+      <Route path={AppRoutes.SUBSTITUTIONS} element={<SubstitutionList />} />
+      <Route path={AppRoutes.ANAMNESIS} element={<Anamnesis />} />
+      <Route path={AppRoutes.PROTOCOLS} element={<Protocols />} />
+      <Route path={AppRoutes.GUIDELINES} element={<Guidelines />} />
+      <Route path={AppRoutes.CERTIFICATES} element={<Certificates />} />
+      <Route path={AppRoutes.LAB_ANALYSIS} element={<LabAnalysis />} />
+      <Route path={AppRoutes.FORM_MANAGER} element={<FormManager />} />
+      <Route path={AppRoutes.CALCULATORS} element={<Calculators />} />
       
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" />} />
+      {/* Fallback para qualquer rota desconhecida ir para o dashboard */}
+      <Route path="*" element={<Navigate to={AppRoutes.DASHBOARD} />} />
     </Routes>
   );
 };

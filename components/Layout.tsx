@@ -18,7 +18,9 @@ import {
   FileCheck,
   FlaskConical,
   CalendarDays,
-  Scale
+  Scale,
+  Utensils,
+  Calculator
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -35,12 +37,14 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [imageError, setImageError] = useState(false);
 
+  // Lista de navegação atualizada com Calculadoras
   const navItems = [
     { label: 'Dashboard', icon: <Home size={20} />, path: '/dashboard' },
     { label: 'Agenda', icon: <CalendarDays size={20} />, path: '/agenda' },
     { label: 'Pacientes', icon: <User size={20} />, path: '/patients' },
-    { label: 'IA Nutricional', icon: <Sparkles size={20} />, path: '/meal-plan-ai' },
-    { label: 'Bioimpedância', icon: <Scale size={20} />, path: '/bioimpedance' }, // Item Novo
+    { label: 'Planej. Alimentar', icon: <Utensils size={20} />, path: '/meal-plan-ai' },
+    { label: 'Calculadoras', icon: <Calculator size={20} />, path: '/calculators' },
+    { label: 'Bioimpedância', icon: <Scale size={20} />, path: '/bioimpedance' }, 
     { label: 'Exames Lab.', icon: <FlaskConical size={20} />, path: '/lab-analysis' },
     { label: 'Anamnese', icon: <ClipboardList size={20} />, path: '/anamnesis' },
     { label: 'Antropometria', icon: <Ruler size={20} />, path: '/anthropometry' },
@@ -53,7 +57,17 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
 
   const handleNavigate = (path: string) => {
     // Rotas livres que não exigem paciente selecionado
-    const freeRoutes = ['/patients', '/dashboard', '/substitutions', '/settings', '/protocols', '/guidelines', '/certificates', '/agenda'];
+    const freeRoutes = [
+        '/patients', 
+        '/dashboard', 
+        '/substitutions', 
+        '/settings', 
+        '/protocols', 
+        '/guidelines', 
+        '/certificates', 
+        '/agenda',
+        '/calculators'
+    ];
     
     if (!freeRoutes.includes(path) && !currentPatient) {
       alert("Selecione um paciente na lista primeiro.");

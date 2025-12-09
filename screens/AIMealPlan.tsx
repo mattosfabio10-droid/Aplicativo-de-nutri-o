@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Download, Check, AlertTriangle, ChevronDown, ChevronUp, FileText, Settings, PieChart, Edit2, Save, X, Plus, Trash2, Search, BookOpen, Clock, Calculator, RefreshCw, Scale, Info, LayoutTemplate } from 'lucide-react';
+import { Sparkles, Download, Check, AlertTriangle, ChevronDown, ChevronUp, FileText, Settings, PieChart, Edit2, Save, X, Plus, Trash2, Search, BookOpen, Clock, Calculator, RefreshCw, Scale, Info, LayoutTemplate, PenTool } from 'lucide-react';
 import { jsPDF } from "jspdf";
 import Layout from '../components/Layout';
 import { useApp } from '../context/AppContext';
@@ -12,7 +12,7 @@ import { StorageService } from '../services/storage';
 import { FoodDatabase, FoodDbItem, findFoodByName, getSmartMeasures, calculateCaloriesForMeasure, calculateSmartSubstitutions, calculateMacrosForMeasure } from '../data/foodDatabase';
 import { MealPlanTemplates, MealPlanTemplate } from '../data/mealPlanTemplates';
 
-// Helper para converter imagem URL para Base64 (para o PDF)
+// ... Helper Functions ...
 const getBase64ImageFromURL = (url: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -34,27 +34,21 @@ const getBase64ImageFromURL = (url: string): Promise<string> => {
   });
 };
 
-// Helper para gerar um logo fallback via Canvas se a imagem externa falhar
 const generateFallbackLogo = (): string => {
   const canvas = document.createElement("canvas");
   canvas.width = 200;
   canvas.height = 200;
   const ctx = canvas.getContext("2d");
   if (ctx) {
-    // Fundo Verde #A6CE71
     ctx.fillStyle = "#A6CE71";
     ctx.beginPath();
     ctx.arc(100, 100, 90, 0, Math.PI * 2);
     ctx.fill();
-
-    // Texto "FM"
     ctx.fillStyle = "#000000";
     ctx.font = "bold 80px Arial, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("FM", 100, 105);
-    
-    // Borda
     ctx.strokeStyle = "#FFFFFF";
     ctx.lineWidth = 8;
     ctx.beginPath();
@@ -64,23 +58,16 @@ const generateFallbackLogo = (): string => {
   return canvas.toDataURL("image/png");
 };
 
-// Helper de IMC
 const calculateBMI = (weight: number, height: number) => {
     if (!weight || !height) return { value: 0, label: '', color: '' };
     const h = height / 100;
     const bmi = parseFloat((weight / (h * h)).toFixed(1));
-    
-    let label = '';
-    let color = ''; // Para uso na UI
-
-    if (bmi < 18.5) { label = 'Abaixo do Peso'; color = 'text-blue-400 border-blue-400'; }
-    else if (bmi < 24.9) { label = 'Eutrofia (Normal)'; color = 'text-green-400 border-green-400'; }
-    else if (bmi < 29.9) { label = 'Sobrepeso'; color = 'text-yellow-400 border-yellow-400'; }
-    else if (bmi < 34.9) { label = 'Obesidade Grau I'; color = 'text-orange-400 border-orange-400'; }
-    else if (bmi < 39.9) { label = 'Obesidade Grau II'; color = 'text-red-400 border-red-400'; }
-    else { label = 'Obesidade Grau III'; color = 'text-red-600 border-red-600'; }
-
-    return { value: bmi, label, color };
+    if (bmi < 18.5) return { value: bmi, label: 'Abaixo do Peso', color: 'text-blue-400 border-blue-400' };
+    if (bmi < 24.9) return { value: bmi, label: 'Eutrofia (Normal)', color: 'text-green-400 border-green-400' };
+    if (bmi < 29.9) return { value: bmi, label: 'Sobrepeso', color: 'text-yellow-400 border-yellow-400' };
+    if (bmi < 34.9) return { value: bmi, label: 'Obesidade Grau I', color: 'text-orange-400 border-orange-400' };
+    if (bmi < 39.9) return { value: bmi, label: 'Obesidade Grau II', color: 'text-red-400 border-red-400' };
+    return { value: bmi, label: 'Obesidade Grau III', color: 'text-red-600 border-red-600' };
 };
 
 const AIMealPlan: React.FC = () => {
@@ -90,22 +77,14 @@ const AIMealPlan: React.FC = () => {
   const [generatedPlan, setGeneratedPlan] = useState<MealPlan | null>(null);
   const [error, setError] = useState('');
   const [expandedMeal, setExpandedMeal] = useState<string | null>(null);
-  
-  // Estado de Edição
   const [isEditing, setIsEditing] = useState(false);
   const [tempPlan, setTempPlan] = useState<MealPlan | null>(null);
-
-  // Estados da Modal de Alimentos
   const [showFoodModal, setShowFoodModal] = useState(false);
   const [mealIndexToAdd, setMealIndexToAdd] = useState<number | null>(null);
   const [itemIndexToReplace, setItemIndexToReplace] = useState<number | null>(null);
   const [foodSearch, setFoodSearch] = useState('');
   const [activeFoodCategory, setActiveFoodCategory] = useState(FoodDatabase[0].id);
-
-  // Estado da Modal de Templates
   const [showTemplateModal, setShowTemplateModal] = useState(false);
-
-  // Estados de configuração da geração
   const [targetGoal, setTargetGoal] = useState<string>('Manutenção');
   const [customCalories, setCustomCalories] = useState<string>('');
 
@@ -128,9 +107,33 @@ const AIMealPlan: React.FC = () => {
 
   useEffect(() => {
     if (isEditing && generatedPlan) {
-        setTempPlan(JSON.parse(JSON.stringify(generatedPlan))); 
+        if (!tempPlan) setTempPlan(JSON.parse(JSON.stringify(generatedPlan))); 
     }
   }, [isEditing, generatedPlan]);
+
+  const handleManualCreation = () => {
+    if (!currentPatient) return;
+    const manualPlan: MealPlan = {
+        id: Date.now().toString(),
+        patientId: currentPatient.id,
+        createdAt: new Date().toISOString(),
+        totalCalories: 0,
+        macros: { protein: 0, carbs: 0, fats: 0 },
+        meals: [
+            { id: '1', name: 'Café da Manhã', time: '08:00', items: [] },
+            { id: '2', name: 'Almoço', time: '12:00', items: [] },
+            { id: '3', name: 'Lanche da Tarde', time: '16:00', items: [] },
+            { id: '4', name: 'Jantar', time: '20:00', items: [] },
+            { id: '5', name: 'Ceia', time: '22:00', items: [] }
+        ],
+        shoppingList: [],
+        generalAdvice: 'Beba pelo menos 2 litros de água por dia.\nEvite alimentos ultraprocessados.'
+    };
+    setGeneratedPlan(manualPlan);
+    setTempPlan(JSON.parse(JSON.stringify(manualPlan)));
+    setIsEditing(true);
+    setExpandedMeal('1');
+  };
 
   const handleGenerate = async () => {
     if (!currentPatient) return;
@@ -138,40 +141,29 @@ const AIMealPlan: React.FC = () => {
     setError('');
     setIsEditing(false);
     setTempPlan(null);
-    
     try {
       const patientForGeneration = {
         ...currentPatient,
         goal: targetGoal,
         customCalories: customCalories ? Number(customCalories) : undefined
       };
-
       const plan = await generateMealPlanWithAI(patientForGeneration);
-      
       if (plan) {
-        // Pós-processamento: Garantir substituições mesmo se a IA falhar
         plan.meals.forEach(meal => {
             meal.items.forEach(item => {
-                // Tenta corrigir calorias se vier zerado (comum em IAs que não sabem calcular exato)
                 if (!item.calories || item.calories === 0) {
                     const dbItem = findFoodByName(item.name);
                     if (dbItem) {
-                        // Tenta extrair numero da quantidade string. Ex: "100g" -> 100
                         const qtyNum = parseInt(item.quantity.replace(/\D/g, '')) || dbItem.baseQty;
                         item.calories = Math.round((qtyNum / dbItem.baseQty) * dbItem.kcal);
                     }
                 }
-
-                // Se a IA não mandou substituições, gera localmente
                 if (!item.substitutions || item.substitutions.length === 0) {
                     const localSubs = calculateSmartSubstitutions(item.name, item.calories || 0);
-                    if (localSubs.length > 0) {
-                        item.substitutions = localSubs;
-                    }
+                    if (localSubs.length > 0) item.substitutions = localSubs;
                 }
             });
         });
-
         setGeneratedPlan(plan);
         StorageService.saveMealPlan(plan);
         if (plan.meals.length > 0) setExpandedMeal(plan.meals[0].id);
@@ -187,49 +179,40 @@ const AIMealPlan: React.FC = () => {
 
   const handleLoadTemplate = (template: MealPlanTemplate) => {
       if (!currentPatient) return;
-
       const newPlan: MealPlan = {
           id: Date.now().toString(),
           patientId: currentPatient.id,
           createdAt: new Date().toISOString(),
           totalCalories: template.totalCalories,
           macros: template.macros,
-          meals: template.meals, // Refeições já vêm estruturadas
-          shoppingList: [], // Pode ser gerado depois ou deixado vazio
+          meals: template.meals,
+          shoppingList: [],
           generalAdvice: template.generalAdvice
       };
-
-      // Garantir substituições nos templates também
       newPlan.meals.forEach(meal => {
         meal.items.forEach(item => {
             if (!item.substitutions || item.substitutions.length === 0) {
                 const localSubs = calculateSmartSubstitutions(item.name, item.calories || 0);
-                if (localSubs.length > 0) {
-                    item.substitutions = localSubs;
-                }
+                if (localSubs.length > 0) item.substitutions = localSubs;
             }
         });
       });
-
       setGeneratedPlan(newPlan);
       StorageService.saveMealPlan(newPlan);
       if (newPlan.meals.length > 0) setExpandedMeal(newPlan.meals[0].id);
       setShowTemplateModal(false);
   };
 
-  // --- Funções Auxiliares de Recálculo ---
-
+  // ... (Other handlers unchanged) ...
   const recalculatePlanTotals = (plan: MealPlan): MealPlan => {
       let totalCals = 0;
       let totalProtein = 0;
       let totalCarbs = 0;
       let totalFats = 0;
-
       plan.meals.forEach(meal => {
           meal.items.forEach(item => {
               const cals = Number(item.calories) || 0;
               totalCals += cals;
-
               const dbItem = findFoodByName(item.name);
               if (dbItem && dbItem.kcal > 0) {
                   const ratio = cals / dbItem.kcal;
@@ -239,36 +222,24 @@ const AIMealPlan: React.FC = () => {
               }
           });
       });
-
       return {
           ...plan,
           totalCalories: Math.round(totalCals),
-          macros: {
-              protein: Math.round(totalProtein),
-              carbs: Math.round(totalCarbs),
-              fats: Math.round(totalFats)
-          }
+          macros: { protein: Math.round(totalProtein), carbs: Math.round(totalCarbs), fats: Math.round(totalFats) }
       };
   };
-
-  // --- Funções de Edição e Manipulação de Dados ---
 
   const handleUpdateItem = (mealIndex: number, itemIndex: number, field: keyof MealItem, value: any) => {
     if (!tempPlan) return;
     let newPlan = { ...tempPlan };
-    
     if (field === 'substitutions') {
         newPlan.meals[mealIndex].items[itemIndex].substitutions = value.split(',').map((s: string) => s.trim());
     } else if (field === 'calories') {
         const newCals = Number(value) || 0;
         newPlan.meals[mealIndex].items[itemIndex].calories = newCals;
-        // Recalcular totais
         newPlan = recalculatePlanTotals(newPlan);
     } else {
-        newPlan.meals[mealIndex].items[itemIndex] = {
-            ...newPlan.meals[mealIndex].items[itemIndex],
-            [field]: value
-        };
+        newPlan.meals[mealIndex].items[itemIndex] = { ...newPlan.meals[mealIndex].items[itemIndex], [field]: value };
     }
     setTempPlan(newPlan);
   };
@@ -277,28 +248,21 @@ const AIMealPlan: React.FC = () => {
       if (!tempPlan) return;
       const measureAmount = Number(measureAmountStr);
       if (isNaN(measureAmount)) return;
-
       const dbItem = findFoodByName(foodName);
       if (!dbItem) return;
-
       const measures = getSmartMeasures(dbItem);
       const selectedMeasure = measures.find(m => m.amount === measureAmount);
       const label = selectedMeasure ? selectedMeasure.label : `${measureAmount}${dbItem.baseUnit}`;
-
       const newCalories = calculateCaloriesForMeasure(dbItem, measureAmount);
       const newSubstitutions = calculateSmartSubstitutions(dbItem.name, newCalories);
-
       let newPlan = { ...tempPlan };
-      
       newPlan.meals[mealIndex].items[itemIndex] = {
           ...newPlan.meals[mealIndex].items[itemIndex],
           quantity: label,
           calories: newCalories,
           substitutions: newSubstitutions
       };
-
       newPlan = recalculatePlanTotals(newPlan);
-
       setTempPlan(newPlan);
   };
 
@@ -319,12 +283,7 @@ const AIMealPlan: React.FC = () => {
   const handleAddMeal = () => {
     if (!tempPlan) return;
     const newPlan = { ...tempPlan };
-    newPlan.meals.push({
-      id: Date.now().toString(),
-      name: 'Nova Refeição',
-      time: '00:00',
-      items: []
-    });
+    newPlan.meals.push({ id: Date.now().toString(), name: 'Nova Refeição', time: '00:00', items: [] });
     setTempPlan(newPlan);
   };
 
@@ -339,12 +298,7 @@ const AIMealPlan: React.FC = () => {
   const handleAddItemManual = (mealIndex: number) => {
       if (!tempPlan) return;
       const newPlan = { ...tempPlan };
-      newPlan.meals[mealIndex].items.push({
-          name: 'Novo Alimento',
-          quantity: '1 porção',
-          calories: 0,
-          substitutions: []
-      });
+      newPlan.meals[mealIndex].items.push({ name: 'Novo Alimento', quantity: '1 porção', calories: 0, substitutions: [] });
       setTempPlan(newPlan);
   };
 
@@ -357,26 +311,15 @@ const AIMealPlan: React.FC = () => {
 
   const handleAddFromDatabase = (food: FoodDbItem) => {
       if (!tempPlan || mealIndexToAdd === null) return;
-      
       let newPlan = { ...tempPlan };
-      
       const autoSubstitutions = calculateSmartSubstitutions(food.name, food.kcal);
-      
-      const newItem: MealItem = {
-          name: food.name,
-          quantity: food.qty,
-          calories: food.kcal, 
-          substitutions: autoSubstitutions
-      };
-
+      const newItem: MealItem = { name: food.name, quantity: food.qty, calories: food.kcal, substitutions: autoSubstitutions };
       if (itemIndexToReplace !== null) {
           newPlan.meals[mealIndexToAdd].items[itemIndexToReplace] = newItem;
       } else {
           newPlan.meals[mealIndexToAdd].items.push(newItem);
       }
-
       newPlan = recalculatePlanTotals(newPlan);
-
       setTempPlan(newPlan);
       setShowFoodModal(false);
       setItemIndexToReplace(null);
@@ -407,19 +350,13 @@ const AIMealPlan: React.FC = () => {
   const handleExportPDF = async () => {
       if (!generatedPlan || !currentPatient) return;
       const doc = new jsPDF();
-      const primaryColor = [166, 206, 113]; // #A6CE71
-      
-      // CONFIGURAÇÕES GERAIS DE LAYOUT
-      const pageWidth = 210; // A4 width in mm
+      const primaryColor = [166, 206, 113];
+      const pageWidth = 210;
       const margin = 15;
       const contentWidth = pageWidth - (margin * 2);
       const rightMarginX = pageWidth - margin;
-      
-      // Header Background
       doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
       doc.rect(0, 0, pageWidth, 35, 'F');
-      
-      // LOGO HANDLING
       try {
           const logoUrl = "https://i.imgur.com/JrGn2f5.png"; 
           const logoData = await getBase64ImageFromURL(logoUrl);
@@ -428,83 +365,55 @@ const AIMealPlan: React.FC = () => {
           try {
             const fallbackLogo = generateFallbackLogo();
             doc.addImage(fallbackLogo, 'PNG', 10, 2, 30, 30);
-          } catch (err2) {
-             // Fallback simples
-          }
+          } catch (err2) {}
       }
-
-      // Título do PDF
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(24);
       doc.setFont("helvetica", "bold");
       doc.text("PLANO ALIMENTAR", 105, 18, { align: "center" });
-      
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal");
       doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, 105, 26, { align: "center" });
-      
       let y = 50;
-      
-      // IMC Calc
       const bmiInfo = calculateBMI(currentPatient.weight, currentPatient.height);
-
-      // Bloco de Informações do Paciente
       doc.setDrawColor(200, 200, 200);
       doc.setFillColor(250, 250, 250);
       doc.roundedRect(margin, y - 5, contentWidth, 30, 3, 3, 'FD');
-      
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.text("Paciente:", margin + 5, y + 5);
       doc.setFont("helvetica", "normal");
       doc.text(currentPatient.name, margin + 30, y + 5);
-      
       doc.setFont("helvetica", "bold");
       doc.text("Objetivo:", margin + 5, y + 12);
       doc.setFont("helvetica", "normal");
       doc.text(targetGoal, margin + 30, y + 12); 
-
-      // IMC no PDF
       doc.setFont("helvetica", "bold");
       doc.text("Diagnóstico:", margin + 5, y + 19);
       doc.setFont("helvetica", "normal");
-      if (bmiInfo.value > 0) {
-          doc.text(`IMC ${bmiInfo.value} kg/m² - ${bmiInfo.label}`, margin + 35, y + 19);
-      } else {
-          doc.text("Dados insuficientes para cálculo", margin + 35, y + 19);
-      }
-      
+      if (bmiInfo.value > 0) doc.text(`IMC ${bmiInfo.value} kg/m² - ${bmiInfo.label}`, margin + 35, y + 19);
+      else doc.text("Dados insuficientes para cálculo", margin + 35, y + 19);
       doc.setFont("helvetica", "bold");
       doc.text("Calorias:", 120, y + 5);
       doc.setFont("helvetica", "normal");
       doc.text(`${generatedPlan.totalCalories} kcal`, 145, y + 5);
       
-      if (generatedPlan.macros) {
-          doc.setFontSize(9);
-          doc.text(`PTN: ${generatedPlan.macros.protein}g | CHO: ${generatedPlan.macros.carbs}g | GORD: ${generatedPlan.macros.fats}g`, 120, y + 12);
-      }
+      // Macros header removed as requested
       
       y += 35;
-      
-      // Título da Seção
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(primaryColor[0] - 50, primaryColor[1] - 50, primaryColor[2] - 50); 
       doc.text("Refeições do Dia", margin, y);
       y += 10;
-      
-      // Loop das Refeições
       generatedPlan.meals.forEach((meal) => {
         if (y > 260) { doc.addPage(); y = 20; }
-        
         doc.setFillColor(240, 240, 240);
         doc.rect(margin, y - 6, contentWidth, 8, 'F');
-        
         doc.setFontSize(11);
         doc.setFont("helvetica", "bold");
         doc.setTextColor(0, 0, 0);
         doc.text(meal.name.toUpperCase(), margin + 3, y);
-        
         if(meal.time) {
             doc.setFont("helvetica", "normal");
             doc.setFontSize(10);
@@ -514,72 +423,52 @@ const AIMealPlan: React.FC = () => {
             doc.setFont("helvetica", "bold");
             doc.setFontSize(11);
         }
-
         y += 8; 
-        
         meal.items.forEach((item) => {
            if (y > 275) { doc.addPage(); y = 20; }
-           
            doc.setFontSize(10);
            const qtyX = rightMarginX; 
            const maxNameWidth = 125; 
            const bulletName = `• ${item.name}`;
            const splitName = doc.splitTextToSize(bulletName, maxNameWidth);
-           
            doc.setFont("helvetica", "normal");
            doc.text(splitName, margin + 5, y);
-           
            doc.setFont("helvetica", "bold");
            doc.text(`${item.quantity}`, qtyX, y, { align: 'right' });
-           
            const lineHeight = 5; 
            const blockHeight = splitName.length * lineHeight;
-           
            y += blockHeight; 
-           
            if (item.substitutions && item.substitutions.length > 0) {
               doc.setFontSize(9);
               doc.setTextColor(100, 100, 100);
               doc.setFont("helvetica", "italic");
-              
               const subLabel = "Substituições: ";
               const subText = item.substitutions.join(', ');
               const fullSubText = `${subLabel}${subText}`;
-              
               const splitSub = doc.splitTextToSize(fullSubText, contentWidth - 10); 
               doc.text(splitSub, margin + 7, y); 
-              
               y += (splitSub.length * 4) + 2; 
               doc.setTextColor(0, 0, 0);
               doc.setFontSize(10);
-           } else {
-              y += 2; 
-           }
+           } else { y += 2; }
         });
-        
         y += 4; 
       });
-      
       if (y > 230) { doc.addPage(); y = 20; } else { y += 10; }
-      
       doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
       doc.setLineWidth(0.5);
       doc.line(margin, y, rightMarginX, y);
       y += 10;
-      
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(primaryColor[0] - 50, primaryColor[1] - 50, primaryColor[2] - 50);
       doc.text("Orientações Gerais", margin, y);
       y += 7;
-      
       doc.setFontSize(10);
       doc.setTextColor(50, 50, 50);
       doc.setFont("helvetica", "normal");
-      
       const adviceLines = doc.splitTextToSize(generatedPlan.generalAdvice, contentWidth);
       doc.text(adviceLines, margin, y);
-      
       doc.save(`Plano_Nutricional_${currentPatient.name.replace(/\s+/g, '_')}.pdf`);
   };
 
@@ -595,7 +484,7 @@ const AIMealPlan: React.FC = () => {
         return { label: 'Adequado', color: 'text-green-400', border: 'border-green-400' };
     }
     if (type === 'carbs') {
-        if (percentage < 45) return { label: 'Baixo', color: 'text-blue-400', border: 'border-blue-400' }; // Low Carb
+        if (percentage < 45) return { label: 'Baixo', color: 'text-blue-400', border: 'border-blue-400' };
         if (percentage > 65) return { label: 'Alto', color: 'text-red-400', border: 'border-red-400' };
         return { label: 'Adequado', color: 'text-green-400', border: 'border-green-400' };
     }
@@ -615,21 +504,16 @@ const AIMealPlan: React.FC = () => {
   if (!currentPatient) return null;
 
   const displayPlan = isEditing ? tempPlan : generatedPlan;
-
   const proteinPct = displayPlan ? getPercentage(displayPlan.macros?.protein || 0, 4, displayPlan.totalCalories || 0) : 0;
   const carbsPct = displayPlan ? getPercentage(displayPlan.macros?.carbs || 0, 4, displayPlan.totalCalories || 0) : 0;
   const fatsPct = displayPlan ? getPercentage(displayPlan.macros?.fats || 0, 9, displayPlan.totalCalories || 0) : 0;
-
   const proteinStatus = getMacroStatus('protein', proteinPct);
   const carbsStatus = getMacroStatus('carbs', carbsPct);
   const fatsStatus = getMacroStatus('fats', fatsPct);
-
-  // Cálculo de IMC para exibição na tela
   const bmiInfo = calculateBMI(currentPatient.weight, currentPatient.height);
 
   return (
     <Layout title="IA Nutricional" showBack>
-      {/* --- MODAL DE TEMPLATES --- */}
       {showTemplateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl">
@@ -638,23 +522,17 @@ const AIMealPlan: React.FC = () => {
                 <LayoutTemplate size={20} className="text-primary" /> 
                 Modelos de Planos Alimentares
               </h3>
-              <button onClick={() => setShowTemplateModal(false)} className="text-gray-500 hover:text-white p-1">
-                <X size={24} />
-              </button>
+              <button onClick={() => setShowTemplateModal(false)} className="text-gray-500 hover:text-white p-1"><X size={24} /></button>
             </div>
-            
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               <p className="text-sm text-gray-400 mb-2">Selecione um modelo abaixo para carregar para <b>{currentPatient.name}</b>. Você poderá editá-lo depois.</p>
-              
               {MealPlanTemplates.map((template) => (
                 <button
                   key={template.id}
                   onClick={() => handleLoadTemplate(template)}
                   className="w-full flex items-start gap-4 p-4 bg-gray-800 hover:bg-gray-700 border border-transparent hover:border-primary/40 rounded-xl transition-all group text-left"
                 >
-                  <div className="bg-black/40 p-3 rounded-lg text-primary group-hover:scale-110 transition-transform">
-                     <FileText size={24} />
-                  </div>
+                  <div className="bg-black/40 p-3 rounded-lg text-primary group-hover:scale-110 transition-transform"><FileText size={24} /></div>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
                         <h4 className="font-bold text-white group-hover:text-primary transition-colors text-base">{template.name}</h4>
@@ -674,7 +552,6 @@ const AIMealPlan: React.FC = () => {
         </div>
       )}
 
-      {/* --- MODAL DE SELEÇÃO DE ALIMENTOS --- */}
       {showFoodModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl">
@@ -683,11 +560,8 @@ const AIMealPlan: React.FC = () => {
                 <BookOpen size={20} className="text-primary" /> 
                 {itemIndexToReplace !== null ? 'Trocar Alimento' : 'Adicionar Alimento'}
               </h3>
-              <button onClick={() => setShowFoodModal(false)} className="text-gray-500 hover:text-white p-1">
-                <X size={24} />
-              </button>
+              <button onClick={() => setShowFoodModal(false)} className="text-gray-500 hover:text-white p-1"><X size={24} /></button>
             </div>
-            
             <div className="p-4 space-y-4">
               <div className="relative">
                 <Search className="absolute left-3 top-3 text-gray-500" size={18} />
@@ -699,18 +573,13 @@ const AIMealPlan: React.FC = () => {
                   className="w-full bg-black border border-gray-700 rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary focus:outline-none placeholder-gray-600"
                 />
               </div>
-
               {!foodSearch && (
                 <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                   {FoodDatabase.map(cat => (
                     <button
                       key={cat.id}
                       onClick={() => setActiveFoodCategory(cat.id)}
-                      className={`px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-colors border ${
-                        activeFoodCategory === cat.id 
-                          ? 'bg-primary text-black border-primary' 
-                          : 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700'
-                      }`}
+                      className={`px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-colors border ${activeFoodCategory === cat.id ? 'bg-primary text-black border-primary' : 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700'}`}
                     >
                       {cat.name}
                     </button>
@@ -718,7 +587,6 @@ const AIMealPlan: React.FC = () => {
                 </div>
               )}
             </div>
-
             <div className="flex-1 overflow-y-auto p-4 pt-0 space-y-2">
               {filteredFoodItems.map((item, idx) => (
                 <button
@@ -751,7 +619,6 @@ const AIMealPlan: React.FC = () => {
         </div>
       )}
 
-      {/* --- ESTADO INICIAL --- */}
       {!generatedPlan ? (
         <div className="flex flex-col h-full items-center justify-center py-10 space-y-6">
           <div className="text-center space-y-2">
@@ -766,7 +633,6 @@ const AIMealPlan: React.FC = () => {
               <Settings size={18} />
               <span className="font-bold uppercase text-xs tracking-wider">Configuração da Prescrição</span>
             </div>
-
             <div className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -796,7 +662,6 @@ const AIMealPlan: React.FC = () => {
                     <ChevronDown className="absolute right-3 top-3.5 text-gray-500 pointer-events-none" size={16} />
                   </div>
                 </div>
-
                 <div>
                    <label className="block text-gray-500 text-xs uppercase font-bold mb-2">
                      Meta Calórica (Kcal)
@@ -835,12 +700,23 @@ const AIMealPlan: React.FC = () => {
                 )}
             </Button>
             
-            <button 
-                onClick={() => setShowTemplateModal(true)}
-                className="w-full py-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-300 font-bold hover:text-white hover:bg-gray-700 transition-all flex items-center justify-center gap-2 text-sm"
-            >
-                <LayoutTemplate size={18} /> Carregar Modelo Pronto
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+                <button 
+                    onClick={() => setShowTemplateModal(true)}
+                    className="w-full py-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-300 font-bold hover:text-white hover:bg-gray-700 transition-all flex flex-col items-center justify-center gap-1 text-xs"
+                >
+                    <LayoutTemplate size={18} className="mb-1 text-blue-400" /> 
+                    Carregar Modelo
+                </button>
+                
+                <button 
+                    onClick={handleManualCreation}
+                    className="w-full py-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-300 font-bold hover:text-white hover:bg-gray-700 transition-all flex flex-col items-center justify-center gap-1 text-xs"
+                >
+                    <PenTool size={18} className="mb-1 text-primary" /> 
+                    Criar Manualmente
+                </button>
+            </div>
           </div>
         </div>
       ) : (
@@ -873,11 +749,19 @@ const AIMealPlan: React.FC = () => {
                {!isEditing ? (
                    <>
                      <button 
+                        onClick={() => setGeneratedPlan(null)} 
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:text-white hover:bg-gray-700 transition-all font-bold text-xs"
+                        title="Criar Novo Plano"
+                      >
+                        <Plus size={16} />
+                        <span className="hidden sm:inline">Novo</span>
+                      </button>
+                     <button 
                         onClick={() => setIsEditing(true)} 
                         className="flex items-center gap-2 px-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-lg hover:bg-gray-700 transition-all font-bold text-xs"
                       >
                         <Edit2 size={16} />
-                        <span>Editar Plano</span>
+                        <span>Editar</span>
                       </button>
                       <button 
                         onClick={handleExportPDF} 
@@ -885,7 +769,7 @@ const AIMealPlan: React.FC = () => {
                         title="Exportar PDF"
                       >
                         <FileText size={16} />
-                        <span>Exportar PDF</span>
+                        <span>PDF</span>
                       </button>
                    </>
                ) : (
@@ -902,7 +786,7 @@ const AIMealPlan: React.FC = () => {
                         className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-opacity-90 transition-all font-bold text-xs shadow-lg shadow-primary/20"
                       >
                         <Save size={16} />
-                        <span>Salvar Alterações</span>
+                        <span>Salvar</span>
                       </button>
                    </>
                )}
@@ -1166,9 +1050,20 @@ const AIMealPlan: React.FC = () => {
             <h4 className="text-primary text-sm font-bold uppercase mb-3 flex items-center gap-2">
                 <FileText size={16} /> Orientações Gerais
             </h4>
-            <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line bg-black/20 p-4 rounded-lg border border-gray-800">
-                {displayPlan?.generalAdvice}
-            </p>
+            {isEditing ? (
+                <textarea 
+                    className="w-full bg-black/40 border border-gray-700 rounded-lg p-3 text-gray-300 text-sm leading-relaxed focus:border-primary focus:outline-none min-h-[100px]"
+                    value={displayPlan?.generalAdvice}
+                    onChange={(e) => {
+                        if(!tempPlan) return;
+                        setTempPlan({...tempPlan, generalAdvice: e.target.value});
+                    }}
+                />
+            ) : (
+                <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line bg-black/20 p-4 rounded-lg border border-gray-800">
+                    {displayPlan?.generalAdvice}
+                </p>
+            )}
           </div>
 
           {!isEditing && (
