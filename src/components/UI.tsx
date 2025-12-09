@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'outline' | 'ghost' }> = ({ 
@@ -5,9 +6,10 @@ export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { 
   variant = 'primary', 
   ...props 
 }) => {
-  const baseStyle = "w-full font-bold py-3.5 px-6 rounded-xl transition-all duration-200 active:scale-95 flex items-center justify-center gap-2";
+  // Removido active:scale-95 para garantir que o evento de clique seja registrado consistentemente
+  const baseStyle = "w-full font-bold py-3.5 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2";
   const variants = {
-    primary: "bg-primary text-black shadow-[0_0_15px_rgba(166,206,113,0.3)] hover:shadow-[0_0_25px_rgba(166,206,113,0.5)]",
+    primary: "bg-primary text-black shadow-[0_0_15px_rgba(166,206,113,0.3)] hover:shadow-[0_0_25px_rgba(166,206,113,0.5)] hover:bg-[#b5dd82]",
     outline: "border border-primary text-primary bg-transparent hover:bg-primary/10",
     ghost: "bg-gray-800 text-gray-300 hover:bg-gray-700"
   };
@@ -47,7 +49,7 @@ export const DashboardCard: React.FC<{
 }> = ({ title, icon, onClick, color }) => (
   <div 
     onClick={onClick}
-    className="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 aspect-square cursor-pointer hover:bg-gray-800 hover:border-primary/50 transition-all group active:scale-95"
+    className="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 aspect-square cursor-pointer hover:bg-gray-800 hover:border-primary/50 transition-all group hover:-translate-y-1"
   >
     <div className={`p-3 rounded-full ${color ? `bg-[${color}]/20 text-[${color}]` : 'bg-primary/10 text-primary'} group-hover:scale-110 transition-transform duration-300`}>
       {icon}

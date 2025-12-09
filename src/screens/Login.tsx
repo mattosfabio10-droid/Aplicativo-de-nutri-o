@@ -16,7 +16,6 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('fabio@nutri.com');
   const [password, setPassword] = useState('123456');
 
-  // Se já estiver logado (ex: deu F5), vai direto pro dashboard
   useEffect(() => {
     if (isAuthenticated) {
         navigate('/dashboard');
@@ -28,15 +27,14 @@ const Login: React.FC = () => {
     setLoading(true);
     setErrorMsg('');
 
+    // Simular delay de rede
     setTimeout(() => {
       const success = login(email, password);
-      
-      if (success) {
-        navigate('/dashboard');
-      } else {
+      if (!success) {
         setErrorMsg('Credenciais inválidas. Verifique email e senha.');
         setLoading(false);
       }
+      // Se sucesso, o useEffect cuidará da navegação
     }, 800);
   };
 
