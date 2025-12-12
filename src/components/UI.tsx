@@ -6,12 +6,12 @@ export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { 
   variant = 'primary', 
   ...props 
 }) => {
-  // Removido active:scale-95 para garantir que o evento de clique seja registrado consistentemente
-  const baseStyle = "w-full font-bold py-3.5 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2";
+  const baseStyle = "w-full font-bold py-3.5 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer select-none text-sm tracking-wide disabled:opacity-50 disabled:cursor-not-allowed";
+  
   const variants = {
-    primary: "bg-primary text-black shadow-[0_0_15px_rgba(166,206,113,0.3)] hover:shadow-[0_0_25px_rgba(166,206,113,0.5)] hover:bg-[#b5dd82]",
-    outline: "border border-primary text-primary bg-transparent hover:bg-primary/10",
-    ghost: "bg-gray-800 text-gray-300 hover:bg-gray-700"
+    primary: "bg-primary text-black shadow-glow hover:shadow-glow-hover hover:bg-[#b5dd82] active:scale-[0.98]",
+    outline: "border border-primary text-primary bg-transparent hover:bg-primary/10 active:scale-[0.98]",
+    ghost: "bg-gray-800 text-gray-300 hover:bg-gray-700 active:scale-[0.98]"
   };
 
   return (
@@ -21,9 +21,9 @@ export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { 
 
 export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement> & { label?: string }> = ({ label, className = '', ...props }) => (
   <div className="mb-4">
-    {label && <label className="block text-primary text-xs font-bold mb-2 uppercase tracking-wide">{label}</label>}
+    {label && <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-wide">{label}</label>}
     <input 
-      className={`w-full bg-gray-900 border border-gray-800 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all ${className}`}
+      className={`w-full bg-gray-900 border border-gray-800 rounded-xl py-3.5 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 ${className}`}
       {...props}
     />
   </div>
@@ -31,13 +31,18 @@ export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement> & { lab
 
 export const Select: React.FC<React.SelectHTMLAttributes<HTMLSelectElement> & { label?: string }> = ({ label, className = '', children, ...props }) => (
   <div className="mb-4">
-    {label && <label className="block text-primary text-xs font-bold mb-2 uppercase tracking-wide">{label}</label>}
-    <select 
-      className={`w-full bg-gray-900 border border-gray-800 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none ${className}`}
-      {...props}
-    >
-      {children}
-    </select>
+    {label && <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-wide">{label}</label>}
+    <div className="relative">
+      <select 
+        className={`w-full bg-gray-900 border border-gray-800 rounded-xl py-3.5 px-4 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-all duration-200 cursor-pointer ${className}`}
+        {...props}
+      >
+        {children}
+      </select>
+      <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+      </div>
+    </div>
   </div>
 );
 
@@ -49,11 +54,18 @@ export const DashboardCard: React.FC<{
 }> = ({ title, icon, onClick, color }) => (
   <div 
     onClick={onClick}
-    className="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 aspect-square cursor-pointer hover:bg-gray-800 hover:border-primary/50 transition-all group hover:-translate-y-1"
+    className="bg-[#121212] border border-gray-800 rounded-2xl p-5 flex flex-col items-center justify-center gap-4 aspect-square cursor-pointer hover:bg-gray-800 hover:border-primary/30 transition-all duration-300 group active:scale-95 shadow-lg relative overflow-hidden"
   >
-    <div className={`p-3 rounded-full ${color ? `bg-[${color}]/20 text-[${color}]` : 'bg-primary/10 text-primary'} group-hover:scale-110 transition-transform duration-300`}>
+    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+    <div 
+      className="p-4 rounded-full transition-transform duration-300 group-hover:scale-110 shadow-glow"
+      style={{ 
+        backgroundColor: color ? `${color}15` : 'rgba(166,206,113,0.1)', 
+        color: color || '#A6CE71' 
+      }}
+    >
       {icon}
     </div>
-    <span className="text-sm font-medium text-center text-gray-200">{title}</span>
+    <span className="text-sm font-bold text-center text-gray-300 group-hover:text-white transition-colors tracking-wide">{title}</span>
   </div>
 );

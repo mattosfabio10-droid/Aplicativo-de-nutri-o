@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { FlaskConical, Sparkles } from 'lucide-react';
+import { FlaskConical } from 'lucide-react';
 import Layout from '../components/Layout';
 import { Button } from '../components/UI';
 import { useApp } from '../context/AppContext';

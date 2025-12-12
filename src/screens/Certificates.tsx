@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { FileCheck, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { jsPDF } from "jspdf";
 import Layout from '../components/Layout';
 import { Button, Input } from '../components/UI';

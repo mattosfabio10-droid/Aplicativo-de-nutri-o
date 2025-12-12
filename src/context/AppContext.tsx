@@ -10,14 +10,15 @@ interface AppContextType {
   setCurrentPatient: (patient: Patient | null) => void;
   patients: Patient[];
   refreshPatients: () => void;
+  isAuthenticated: boolean;
+  login: (email: string, pass: string) => boolean;
+  logout: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Define o usuário padrão (Dr. Fábio) fixo, eliminando a necessidade de login
-  const [currentUser] = useState<User | null>(AuthorizedUsers[0]);
-  
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentPatient, setCurrentPatient] = useState<Patient | null>(null);
   const [patients, setPatients] = useState<Patient[]>([]);
 
@@ -27,7 +28,38 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   useEffect(() => {
     refreshPatients();
+    const savedUser = localStorage.getItem('nutri_session');
+    if (savedUser) {
+        try {
+            let user = JSON.parse(savedUser);
+            const settings = StorageService.getProfessionalSettings();
+            if (settings) {
+                user = { ...user, ...settings };
+            }
+            setCurrentUser(user);
+        } catch (e) {
+            localStorage.removeItem('nutri_session');
+        }
+    }
   }, []);
+
+  const login = (email: string, pass: string): boolean => {
+    const user = AuthorizedUsers.find(u => u.email === email && u.password === pass);
+    if (user) {
+        const settings = StorageService.getProfessionalSettings();
+        const userToSave = settings ? { ...user, ...settings } : user;
+        setCurrentUser(userToSave);
+        localStorage.setItem('nutri_session', JSON.stringify(userToSave));
+        return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+      setCurrentUser(null);
+      localStorage.removeItem('nutri_session');
+      setCurrentPatient(null);
+  };
 
   return (
     <AppContext.Provider value={{ 
@@ -35,7 +67,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       currentPatient, 
       setCurrentPatient, 
       patients, 
-      refreshPatients
+      refreshPatients,
+      isAuthenticated: !!currentUser,
+      login,
+      logout
     }}>
       {children}
     </AppContext.Provider>

@@ -3,7 +3,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  password?: string; // Opcional na interface publica, usado internamente
+  password?: string;
   crn: string;
   role: 'admin' | 'nutritionist';
 }
@@ -23,6 +23,15 @@ export interface Patient {
   activityLevel: 'sedentary' | 'moderate' | 'active';
   history: string;
   preferences: string;
+}
+
+export interface PatientPhoto {
+  id: string;
+  patientId: string;
+  date: string;
+  imageData: string;
+  type: 'front' | 'side' | 'back' | 'face';
+  notes?: string;
 }
 
 export interface Appointment {
@@ -66,6 +75,7 @@ export interface MealPlan {
   meals: Meal[];
   shoppingList: string[];
   generalAdvice: string;
+  goal?: string;
 }
 
 export interface AnthropometryRecord {
@@ -74,65 +84,47 @@ export interface AnthropometryRecord {
   weight: number;
   height: number;
   bmi: number;
-  
-  // Circumferences (cm)
   waist: number;
   abdomen?: number;
   hip: number;
   armRight?: number;
   thighRight?: number;
   calfRight?: number;
-
-  // Skinfolds (mm)
   triceps?: number;
   subscapular?: number;
   suprailiac?: number;
   abdominal?: number;
-
-  // Results & Bioimpedance (Omron HBF-514C Fields)
-  bodyFat?: number; // % Gordura Corporal
-  visceralFat?: number; // Nível de Gordura Visceral
-  skeletalMuscle?: number; // % Músculo Esquelético
-  bodyAge?: number; // Idade Corporal
-  restingMetabolism?: number; // Metabolismo Basal (kcal)
-  
-  fatMass?: number; // kg
-  leanMass?: number; // kg
+  bodyFat?: number;
+  visceralFat?: number;
+  skeletalMuscle?: number;
+  bodyAge?: number;
+  restingMetabolism?: number;
+  fatMass?: number;
+  leanMass?: number;
 }
 
 export interface Anamnesis {
   patientId: string;
   updatedAt: string;
-  
-  // Clínico Geral
   pathologies: string;
   medications: string;
   familyHistory: string;
-  surgeries: string; // Novo
-  allergies: string; // Novo
-  
-  // Estilo de Vida
+  surgeries: string;
+  allergies: string;
   sleepQuality: string;
   stressLevel: string;
   physicalActivityDetails: string;
-  smoking: string; // Novo
-  alcohol: string; // Novo
-  
-  // Saúde Intestinal (Novo Detalhamento)
-  intestinalFunction: string; // Frequência
-  stoolConsistency: string; // Bristol
-  digestiveSymptoms: string; // JSON string de array (Gases, Azia, etc)
-  
-  // Alimentar
+  smoking: string;
+  alcohol: string;
+  intestinalFunction: string;
+  stoolConsistency: string;
+  digestiveSymptoms: string;
   waterIntake: string;
   appetite: string;
   chewing: string;
-  intolerances: string; // Novo
-  preferences: string; // Novo (Aversões/Preferências)
-  
-  // Rastreamento Metabólico (Sinais e Sintomas) - Novo
-  metabolicTracking: string; // JSON string contendo sintomas marcados (Cansaço, Queda de Cabelo, etc)
-  
+  intolerances: string;
+  preferences: string;
+  metabolicTracking: string;
   notes: string;
 }
 
@@ -145,15 +137,16 @@ export interface FormTemplate {
 }
 
 export enum AppRoutes {
-  LOGIN = '/',
+  LOGIN = '/login',
   DASHBOARD = '/dashboard',
   PATIENTS = '/patients',
   PATIENT_NEW = '/patients/new',
-  PATIENT_DETAILS = '/patients/:id',
+  PATIENT_HISTORY = '/patient-history',
+  PATIENT_PHOTOS = '/patient-photos',
   AGENDA = '/agenda',
   ANAMNESIS = '/anamnesis',
   ANTHROPOMETRY = '/anthropometry',
-  BIOIMPEDANCE = '/bioimpedance',
+  BIOIMPEDANCE = '/bioimpedance', 
   MEAL_PLAN_AI = '/meal-plan-ai',
   SUBSTITUTIONS = '/substitutions',
   PROTOCOLS = '/protocols',
@@ -162,6 +155,5 @@ export enum AppRoutes {
   LAB_ANALYSIS = '/lab-analysis',
   CALCULATORS = '/calculators',
   SETTINGS = '/settings',
-  PATIENT_AREA = '/patient-area',
   FORM_MANAGER = '/forms'
 }

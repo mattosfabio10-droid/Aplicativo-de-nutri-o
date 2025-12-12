@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Leaf, AlertCircle } from 'lucide-react';
+import { ArrowRight, Leaf, AlertCircle, Lock } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Button, Input } from '../components/UI';
 
@@ -12,7 +12,6 @@ const Login: React.FC = () => {
   const [imageError, setImageError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Form States - JÁ PREENCHIDOS FIXOS
   const [email, setEmail] = useState('fabio@nutri.com');
   const [password, setPassword] = useState('123456');
 
@@ -27,102 +26,46 @@ const Login: React.FC = () => {
     setLoading(true);
     setErrorMsg('');
 
-    // Simular delay de rede
     setTimeout(() => {
       const success = login(email, password);
       if (!success) {
-        setErrorMsg('Credenciais inválidas. Verifique email e senha.');
+        setErrorMsg('Credenciais inválidas. Tente novamente.');
         setLoading(false);
       }
-      // Se sucesso, o useEffect cuidará da navegação
     }, 800);
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-hidden font-sans">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none animate-pulse duration-10000"></div>
       
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-black to-black opacity-80"></div>
-      <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-
-      {/* Login Card */}
-      <div className="w-full max-w-md bg-gray-900/40 backdrop-blur-xl border border-gray-800 p-8 md:p-12 rounded-3xl shadow-2xl relative z-10 flex flex-col items-center">
-        
-        {/* Logo Image */}
-        <div className="mb-8 flex flex-col items-center">
-          <div className="w-40 h-40 mb-4 relative flex items-center justify-center">
+      <div className="w-full max-w-md bg-[#121212]/80 backdrop-blur-xl border border-gray-800/50 p-10 rounded-3xl shadow-2xl relative z-10 flex flex-col items-center">
+        <div className="mb-10 flex flex-col items-center relative">
+          <div className="w-32 h-32 mb-6 relative flex items-center justify-center group">
+             <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-all duration-500"></div>
              {!imageError ? (
-               <img 
-                  src="https://i.imgur.com/JrGn2f5.png" 
-                  alt="Logo Mattos NutriCare" 
-                  className="w-full h-full object-contain drop-shadow-2xl"
-                  onError={() => setImageError(true)}
-                  referrerPolicy="no-referrer"
-               />
+               <img src="https://i.imgur.com/JrGn2f5.png" alt="Logo" className="w-full h-full object-contain relative z-10 drop-shadow-2xl" onError={() => setImageError(true)} />
              ) : (
-               <div className="w-32 h-32 bg-black rounded-full flex items-center justify-center text-primary shadow-2xl shadow-primary/10 border border-gray-800 relative overflow-hidden">
-                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-50"></div>
-                 <Leaf size={64} className="relative z-10" fill="currentColor" fillOpacity={0.2} />
-               </div>
+               <div className="w-24 h-24 bg-black rounded-full flex items-center justify-center text-primary border border-gray-800 relative z-10 shadow-glow"><Leaf size={48} /></div>
              )}
           </div>
-          
-          <div className="h-px w-24 bg-primary/50 my-3"></div>
-
-          <p className="text-primary text-sm uppercase tracking-widest font-bold text-center">
-            Mattos NutriCare
-          </p>
-          <p className="text-gray-400 text-xs uppercase tracking-wider font-light mt-1 text-center">
-            Nutrição Ortomolecular
-          </p>
+          <h1 className="text-3xl font-bold text-white tracking-tight mb-1">Mattos NutriCare</h1>
+          <p className="text-primary text-xs font-bold uppercase tracking-[0.3em]">Portal do Especialista</p>
         </div>
         
-        <form onSubmit={handleLogin} className="space-y-5 w-full">
-          {errorMsg && (
-            <div className="bg-red-900/20 border border-red-900/50 text-red-400 p-3 rounded-lg text-xs flex items-center gap-2">
-                <AlertCircle size={14} /> {errorMsg}
-            </div>
-          )}
-
-          <div className="space-y-1">
-             <label className="text-xs font-bold text-gray-500 uppercase ml-1">Email</label>
-             <Input 
-                type="email" 
-                placeholder="seunome@nutri.com" 
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="!bg-black/50 !border-gray-700 focus:!border-primary" 
-             />
+        <form onSubmit={handleLogin} className="w-full space-y-6">
+          {errorMsg && <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm flex items-center gap-3"><AlertCircle size={18} /> {errorMsg}</div>}
+          <div className="space-y-5">
+             <Input type="email" label="Email Corporativo" value={email} onChange={e => setEmail(e.target.value)} className="!bg-black/50 !border-gray-800 focus:!border-primary/50 !py-4" />
+             <div className="relative">
+                <Input type="password" label="Senha de Acesso" value={password} onChange={e => setPassword(e.target.value)} className="!bg-black/50 !border-gray-800 focus:!border-primary/50 !py-4" />
+                <Lock size={16} className="absolute right-4 top-[42px] text-gray-600" />
+             </div>
           </div>
-          <div className="space-y-1">
-             <label className="text-xs font-bold text-gray-500 uppercase ml-1">Senha</label>
-             <Input 
-                type="password" 
-                placeholder="••••••" 
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="!bg-black/50 !border-gray-700 focus:!border-primary" 
-             />
-          </div>
-          
-          <Button type="submit" disabled={loading} className="!mt-8 shadow-xl uppercase tracking-wider text-sm">
-            {loading ? 'Acessando...' : 'Entrar no Sistema'}
-            {!loading && <ArrowRight size={18} />}
+          <Button type="submit" disabled={loading} className="!mt-8 !py-4 shadow-glow hover:shadow-glow-hover text-base tracking-wide">
+            {loading ? 'Autenticando...' : <>Acessar Sistema <ArrowRight size={20} /></>}
           </Button>
         </form>
-
-        <div className="mt-8 pt-8 border-t border-gray-800 text-center w-full">
-          <p className="text-gray-500 text-xs mb-2">Acesso Rápido</p>
-          <div className="flex justify-center gap-2">
-             <span className="text-xs text-gray-600 bg-gray-900 px-3 py-1 rounded-full border border-gray-800">
-               Credenciais preenchidas automaticamente
-             </span>
-          </div>
-        </div>
-      </div>
-      
-      <div className="absolute bottom-6 text-center w-full text-gray-800 text-[10px] uppercase tracking-widest">
-         &copy; 2024 Mattos NutriCare
       </div>
     </div>
   );

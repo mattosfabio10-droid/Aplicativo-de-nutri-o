@@ -162,7 +162,11 @@ const Agenda: React.FC = () => {
                        <div className="flex-1">
                           <h4 className="font-bold text-white text-lg flex items-center gap-2">
                              {appt.patientName}
-                             {appt.patientId && <User size={14} className="text-primary" title="Paciente Cadastrado" />}
+                             {appt.patientId && (
+                                <span title="Paciente Cadastrado" className="flex items-center">
+                                   <User size={14} className="text-primary" />
+                                </span>
+                             )}
                           </h4>
                           <div className="flex items-center gap-2 mt-1">
                              <span className="text-xs bg-gray-800 text-gray-300 px-2 py-0.5 rounded border border-gray-700">{appt.type}</span>
